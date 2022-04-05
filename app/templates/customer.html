@@ -2,10 +2,71 @@
 
 {% block content %}
 <p>
-    Customer Page
+    Recently viewed
 </p>
 
+{% if no_recent_viewed %}
 <p>
-    <a class="btn btn-secondary" href="{{ url_for('customer.customer_portal') }}" role="button">Account</a> <br/>
+    You didn't view products recently
 </p>
+{% else %}
+
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Product ID</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in recent_viewed %}
+      <tr>
+        <th scope="row">{{product.id}}</th>
+        <td>
+            <a href="{{ url_for('product.display_product', product_id=product.id) }}">{{product.name}}</a>
+        </td>
+        <td>{{product.price}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endif %}
+
+<p>
+    Products you may like
+</p>
+
+
+{% if no_most_viewed %}
+<p>
+    You didn't see any products yet.
+</p>
+{% else %}
+
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Product ID</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in most_viewed %}
+      <tr>
+        <th scope="row">{{product.id}}</th>
+        <td>
+            <a href="{{ url_for('product.display_product', product_id=product.id) }}">{{product.name}}</a>
+        </td>
+        <td>{{product.price}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endif %}
+
+
 {% endblock %}

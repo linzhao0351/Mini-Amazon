@@ -3,13 +3,11 @@ from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired, ValidationError
 from flask_wtf import FlaskForm
 
+from .models.search import Search
+
 from flask import Blueprint
 bp = Blueprint('search', __name__)
 
-
-class DisplayForm():
-	def __init__(self, content):
-		self.content = content
 
 class SearchForm(FlaskForm):
 	search_kw = StringField('Search', validators=[DataRequired()])
@@ -20,13 +18,17 @@ class SearchForm(FlaskForm):
 def search_product():
 	form = SearchForm()
 	if form.validate_on_submit():
-		return redirect(url_for('search.display_product', messages=form.search_kw.data))
+		return redirect(url_for('search.display_product', search_kw=form.search_kw.data))
 
 	return "Error"
 
 @bp.route('/result_page', methods=['GET', 'POST'])
 def display_product():
-	messages = request.args['messages']
-	# do things here to get products data
-	form = DisplayForm(messages)
-	return render_template('search.html', title='Search Result', form=form)
+	search_kw = request.args['search_kw']
+	
+	matched_products = Search.search_product(search_kw)
+	no_match = matched_products is None
+
+	return render_template('search.html', title='Search Result', results=matched_products, 
+																 no_match=no_match, 
+																 search_kw=search_kw)
