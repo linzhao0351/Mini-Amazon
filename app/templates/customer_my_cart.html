@@ -5,44 +5,7 @@
     My Cart
 </p>
 
-<form action="" method="post">
-{{ cart_form.hidden_tag() }}
-
-<table class='table table-hover table-bordered container'>
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">Product ID</th>
-      <th scope="col">Product Name</th>
-      <th scope="col">Price</th>
-      <th scope="col">Quantity</th>
-      <th scope="col">Delete Item</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for item in cart_form.items %}
-      <tr>
-        <th scope="row">{{item.product_id}}</th>
-        <td>{{item.product_name}}</td>
-        <td>{{item.price}}</td>
-        <td>{{item.quantity}}</td>
-        <td><a href="{{ url_for('customer.delete_item', product_id=item.product_id.data) }}">Delete Item</a></td>
-      </tr>
-    {% endfor %}
-  </tbody>
-</table>
-
-<input type="submit" name="Update" value="Update Cart">
-
-</form>
-
-
-<form action="" method="post">
-    <input type="submit" name="Clear" value="Clear Cart">
-</form>
-
-<form action="" method="post">
-    <input type="submit" name="Submit" value="Place Your Order">
-</form>
-
-
+<p>
+    {{ info }}
+</p>
 {% endblock %}

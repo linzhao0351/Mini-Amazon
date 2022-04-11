@@ -16,8 +16,8 @@ dbname=$DB_NAME
 if [[ -n `psql -lqt | cut -d \| -f 1 | grep -w "$dbname"` ]]; then
     dropdb $dbname
 fi
-createdb $dbname # need to first brew install postgres, then directly use createdb amazon
+createdb $dbname
 
-psql -af create.sql $dbname # manually run these three lines
+psql -af create.sql $dbname
 cd $datadir
 psql -af $mybase/load.sql $dbname

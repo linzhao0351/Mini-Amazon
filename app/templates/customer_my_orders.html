@@ -5,7 +5,71 @@
     My Orders
 </p>
 
-<p>
-    {{ info }}
-</p>
+<h2>My orders</h2>
+<div>
+    <input class="form-control" type="text" placeholder="Search your order" /> 
+    <button class="btn-search" type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
+        </svg>
+    </button>
+</div>
+        
+
+<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" />
+<div class="container bootdey">
+    <div class="panel panel-default panel-order">
+        <div class="btn-group pull-right">
+            <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">Filter history <i class="fa fa-filter"></i></button>
+            <ul class="dropdown-menu dropdown-menu-right">
+                <li><a href="#">Approved orders</a></li>
+                <li><a href="#">Pending orders</a></li>
+            </ul>
+        </div>
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-1"><img src="https://cdn-icons-png.flaticon.com/512/3439/3439594.png" class="media-object img-thumbnail" /></div>
+                <div class="col-md-11">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <span><strong>Order ID: </strong></span> 
+                            <br />Amount: $516.16 <br />
+                        </div>
+                        <div class="col-md-12">Purchased: 05/31/2014</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-1"><img src="https://cdn-icons-png.flaticon.com/512/7181/7181237.png" class="media-object img-thumbnail" /></div>
+                <div class="col-md-11">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <span><strong>Order ID: </strong></span> 
+                            <br />Amount: $516.16 <br />
+                        </div>
+                        <div class="col-md-12">Purchased: 05/31/2014</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-1"><img src="https://cdn-icons-png.flaticon.com/512/938/938114.png" class="media-object img-thumbnail" /></div>
+                <div class="col-md-11">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <span><strong>Order ID: </strong></span> 
+                            <br />Amount: $516.16 <br />
+                        </div>
+                        <div class="col-md-12">Purchased: 05/31/2014</div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+</div>
+
 {% endblock %}

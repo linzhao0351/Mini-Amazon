@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br>
+<h2 class="fw-400 text-center mt-3 mb-4">Top up money</h2>
+
+<div>
+  <div class="text-center bg-primary p-4 rounded mb-4">
+    <h3 class="text-10 text-white fw-400">${{balance_info.balance}}</h3>
+    <p class="text-white">Available balance</p></div>
+    
+    <form method="post">
+      
+      <div>
+        <label>Amount</label>
+        <div class="input-group">
+        <span class="input-group-text">$</span>
+        <input type="text" name="trans" placeholder="1,516"> </input>
+        <span class="input-group-text p-0">
+          <select class="selectpicker form-control bg-transparent"><option>USD</option>
+      <div>
+
+        <select>
+        </select>
+      </div>
+      <p class="text-muted mt-4">Transactions fees <span class="float-end d-flex align-items-center">5.00 USD</span></p>
+      <hr>
+    </form>
+
+    <a href="{{ url_for('customer.customer_portal') }}" type="button" class="btn btn-light">Back to main menu</a>
+    <button type="submit">Top up</button>
+    <a href="{{ url_for('customer.my_balance_topup') }}" type="button" class="btn btn-light">Top up</a>
+</div>
+{% endblock %}

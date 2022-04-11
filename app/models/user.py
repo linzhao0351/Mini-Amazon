@@ -4,25 +4,22 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from .. import login
 
-from .dal.api import dal_api as db
-
 class User(UserMixin):
-    def __init__(self, id, email, firstname, lastname, identity=1):
+    def __init__(self, id, email, firstname, lastname, address):
         self.id = id
         self.email = email
         self.firstname = firstname
         self.lastname = lastname
-        self.identity = identity
+        self.address= address
 
     @staticmethod
     def get_by_auth(email, password):
         rows = app.db.execute("""
-SELECT password, id, email, firstname, lastname
+SELECT password, id, email, firstname, lastname, address
 FROM Users
 WHERE email = :email
 """,
                               email=email)
-
         if not rows:  # email not found
             return None
         elif not check_password_hash(rows[0][0], password):
@@ -64,9 +61,31 @@ RETURNING id
     @login.user_loader
     def get(id):
         rows = app.db.execute("""
-SELECT id, email, firstname, lastname
+SELECT id, email, firstname, lastname, address
 FROM Users
 WHERE id = :id
 """,
                               id=id)
         return User(*(rows[0])) if rows else None
+
+    @staticmethod
+    def Update(id, email, firstname, lastname, address):
+        rows = app.db.execute("""
+UPDATE Users
+SET email=:email, firstname=:firstname , lastname=:lastname, address=:address
+WHERE id=:id
+""",
+                              id=id,
+                              email =email, 
+                              firstname =firstname, 
+                              lastname =lastname, 
+                              address =address)
+        return "Success"
+    
+    @staticmethod
+    def get_proxy_id():
+        all_id = app.db.execute('''
+SELECT id
+FROM Users
+''')
+        return max(all_id)

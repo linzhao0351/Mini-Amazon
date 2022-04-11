@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Manage your wallet</h2>
+<br>
+
+<div class="bg-white shadow-sm rounded text-center p-3 mb-4">
+    <h3 style="color: SteelBlue; "> ${{user_balance}}</h3>
+    <p class="mb-2 text-muted opacity-8">Available Balance</p>
+    <hr>
+    <a href="{{ url_for('customer.my_balance_withdraw') }}" type="button" class="btn btn-light">Withdraw</a>
+    <a href="{{ url_for('customer.my_balance_topup') }}" type="button" class="btn btn-light">Top up</a>
+</div>
+<br>
+<div>
+<h2>All Transactions</h2>
+<div>
+    <div class="row">
+      <div class="col-2 col-sm-1 text-center"><span class="">Date</span></div>
+      <div class="col col-sm-7">Description</div>
+      <div class="col-auto col-sm-2 d-none d-sm-block text-center"> </div>
+      <div class="col-3 col-sm-2 text-end">Amount</div>
+    </div>
+</div>
+<div class="transaction-list">
+    <div class="transaction-item px-4 py-3" data-bs-toggle="modal" data-bs-target="#transaction-detail">
+      <div class="row align-items-center flex-row">
+        <div class="col-2 col-sm-1 text-center"> <span class="d-block text-4 fw-300">15</span> <span class="d-block text-1 fw-300 text-uppercase">APR</span> </div>
+        <div class="col col-sm-7"> <span class="d-block text-4">Deposit from Bank account</span></div>
+        <div class="col-auto col-sm-2 d-none d-sm-block text-center text-3"> <span class="text-success" data-bs-toggle="tooltip" title="Completed"><i class="fas fa-check-circle"></i></span> </div>
+        <div class="col-3 col-sm-2 text-end text-4"> <span class="text-nowrap">+ $562</span> <span class="text-2 text-uppercase">(USD)</span> </div>
+      </div>
+    </div>
+    <div class="transaction-item px-4 py-3" data-bs-toggle="modal" data-bs-target="#transaction-detail">
+        <div class="row align-items-center flex-row">
+          <div class="col-2 col-sm-1 text-center"> <span class="d-block text-4 fw-300">31</span> <span class="d-block text-1 fw-300 text-uppercase">MAR</span> </div>
+          <div class="col col-sm-7"> <span class="d-block text-4">Deposit from Bank account</span></div>
+          <div class="col-auto col-sm-2 d-none d-sm-block text-center text-3"> <span class="text-success" data-bs-toggle="tooltip" title="Completed"><i class="fas fa-check-circle"></i></span> </div>
+          <div class="col-3 col-sm-2 text-end text-4"> <span class="text-nowrap">+ $720</span> <span class="text-2 text-uppercase">(USD)</span> </div>
+        </div>
+      </div>
+      <div class="transaction-list">
+        <div class="transaction-item px-4 py-3" data-bs-toggle="modal" data-bs-target="#transaction-detail">
+          <div class="row align-items-center flex-row">
+            <div class="col-2 col-sm-1 text-center"> <span class="d-block text-4 fw-300">20</span> <span class="d-block text-1 fw-300 text-uppercase">Mar</span> </div>
+            <div class="col col-sm-7"> <span class="d-block text-4">Withdraw to Bank account</span> </div>
+            <div class="col-auto col-sm-2 d-none d-sm-block text-center text-3"> <span class="text-warning" data-bs-toggle="tooltip" title="In Progress"><i class="fas fa-ellipsis-h"></i></span> </div>
+            <div class="col-3 col-sm-2 text-end text-4"> <span class="text-nowrap">- $1015</span> <span class="text-2 text-uppercase">(USD)</span> </div>
+          </div>
+        </div>
+
+<div class="bg-white shadow-sm rounded text-center p-3 mb-4">
+  <a href="{{ url_for('customer.customer_portal') }}" type="button" class="btn btn-light">Back to main menu</a>
+</div>
+
+{% endblock %}

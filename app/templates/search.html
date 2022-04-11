@@ -2,37 +2,8 @@
 
 {% block content %}
 
-{% if no_match %}
-<p>
-    No matched product
-</p>
-{% else %}
-
-<p>
-    Search results for {{ search_kw }}
-</p>
-
-<table class='table table-hover table-bordered container'>
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">Product ID</th>
-      <th scope="col">Product Name</th>
-      <th scope="col">Price</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for product in results %}
-      <tr>
-        <th scope="row">{{product.id}}</th>
-        <td>
-            <a href="{{ url_for('product.display_product', product_id=product.id) }}">{{product.name}}</a>
-        </td>
-        <td>{{product.price}}</td>
-      </tr>
-    {% endfor %}
-  </tbody>
-</table>
-
-{% endif %}
+ <p>
+ 	{{form.content}}
+ </p>
 
 {% endblock %}

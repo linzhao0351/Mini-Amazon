@@ -1,11 +1,86 @@
 {% extends "base.html" %}
 
 {% block content %}
-<p>
-    My Profile
-</p>
 
-<p>
-    {{ info }}
-</p>
+<h1>Manage your profile</h1>
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.firstname.label }}<br>
+        {{ form.firstname(size=32) }}
+    </p>
+    <p>
+        {{ form.email.label }}<br>
+        {{ form.email(size=32) }}
+    </p>
+    <p>{{ form.submit() }}</p>
+</form>
+
+
+<div class="container">
+<div class="row gutters">
+<div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+<div class="card h-100">
+    <div class="card-body">
+        <div>
+            <div>
+                <div><img src="https://cdn-icons.flaticon.com/png/512/2763/premium/2763444.png?token=exp=1649020401~hmac=4ed9b2c432613b97e1bb56668b7b81ba" width="150" height="150" /></div>
+                <br>
+                <h5>{{cuser.firstname }} {{cuser.lastname}}</h5>
+                <h6>ID: {{cuser.id}}</h6>
+                <h6>Email: {{cuser.email}}</h6>
+                <h6>Address: {{cuser.address}}</h6>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+<div class="card h-100">
+    <div class="card-body">
+        <div class="row gutters">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <h6 class="mb-2 text-primary">Edit your profile</h6>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                <div class="form-group">
+                    <label for="firstname">First name</label>
+                    <input type="text" class="form-control" id="firstname" placeholder="Enter your new first name">
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                <div class="form-group">
+                    <label for="lastname">Last name</label>
+                    <input type="text" class="form-control" id="lastname" placeholder="Enter your new last name">
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                <div class="form-group">
+                    <label for="eMail">Email</label>
+                    <input type="email" class="form-control" id="email" placeholder="Enter your new email">
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input type="text" class="form-control" id="Address" placeholder="Enter your new address">
+                </div>
+            </div>
+        </div>
+        <div class="row gutters">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="text-right">
+                    <a href="{{ url_for('customer.customer_portal') }}" type="button" class="btn btn-light">Back to main menu</a>
+                    <a href="{{ url_for('customer.my_profile') }}" type="button" class="btn btn-light">Update your profile</a>      
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+
+
+
 {% endblock %}

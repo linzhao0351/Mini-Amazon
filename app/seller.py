@@ -4,6 +4,7 @@ from flask_login import current_user
 from flask import Blueprint
 bp = Blueprint('seller', __name__)
 
+from .models.user import User
 
 @bp.route('/seller/account')
 def seller_portal():
@@ -11,6 +12,12 @@ def seller_portal():
 		return render_template('seller_portal.html')
 	else:
 		return redirect(url_for('index.index'))
+
+@bp.route('/seller/public_profile')
+def public_profile():
+	cuser = User.get(current_user.id)
+
+	return render_template('seller_public_profile.html', cuser=cuser)
 
 
 @bp.route('/seller/account/my-profile')
