@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2> My Top 5 Popular Products Sold in the Past 3 Months</h2>
+
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Product ID</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Quantities Sold</th>
+      <th scope="col">Current Inventory</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in trendy_products%}
+      <tr>
+        <th scope="row">{{product.pid}}</th>
+        <td>{{product.name}}</td>
+        <td>{{product.sales}}</td>
+        <td>{{product.quantity}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h2> My Products with Less or Equal Than 10 Items in Stock</h2>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Product ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Quantity</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in products%}
+      <tr>
+        <th scope="row">{{product.id}}</th>
+        <td>{{product.name}}</td>
+        <td>{{product.quantity}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

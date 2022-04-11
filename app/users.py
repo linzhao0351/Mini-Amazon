@@ -4,14 +4,13 @@ from flask_login import login_user, logout_user, current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
-from datetime import date
 
 from .models.user import User
-from .models.balance import Balance
-from .models.balance import Update_balance
+
 
 from flask import Blueprint
 bp = Blueprint('users', __name__)
+
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -30,7 +29,7 @@ def login():
     if form.validate_on_submit():
         user = User.get_by_auth(form.email.data, form.password.data)
         if user is None:
-            flash('Invalid email or password, please try again')
+            flash('Invalid email or password')
             return redirect(url_for('users.login'))
 
         user.identity = form.login_as.data
@@ -66,16 +65,6 @@ class RegistrationForm(FlaskForm):
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
-
-    #data to create balance when users register
-    balance_info_all = Balance.get_lastrow()
-    trans_id = balance_info_all.trans_id + 1
-    trans_date = date.today()
-    user_id = User.get_proxy_id().id + 1
-    trans = 0
-    balance = 0
-    trans_description = 'initial balance'
-		    
     if current_user.is_authenticated:
         return redirect(url_for('index.index'))
     form = RegistrationForm()
@@ -85,9 +74,7 @@ def register():
                          form.firstname.data,
                          form.lastname.data):
             flash('Congratulations, you are now a registered user!')
-            Update_balance.insert(trans_id, trans_date, user_id, trans, trans_description, balance)
             return redirect(url_for('users.login'))
-
     return render_template('register.html', title='Register', form=form)
 
 

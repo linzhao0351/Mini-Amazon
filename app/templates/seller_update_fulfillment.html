@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2> Current Order </h2>
+<table class='table table-hover table-bordered container'>
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Order ID</th>
+        <th scope="col">Product ID</th>
+        <th scope="col">Quantity</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for product in order%}
+        <tr>
+          <th scope="row">{{product.id}}</th>
+          <td>{{product.pid}}</td>
+          <td>{{product.quantity}}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+<h2> Update Fulfillment Status </h2>
+<form action="" method="post">
+  {{ form.hidden_tag() }}
+  <p>
+    {{ form.fulfillment.label }}<br/>
+    {{ form.fulfillment(size=32) }}<br/>
+  </p>
+  <p>
+    {{ form.submit() }}<br/>
+  </p> 
+</form>
+
+{% endblock %}

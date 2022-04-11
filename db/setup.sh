@@ -19,5 +19,6 @@ fi
 createdb $dbname
 
 psql -af create.sql $dbname
+# reload data here ... $dbname -> amazon, also check mybase directory
 cd $datadir
 psql -af $mybase/load.sql $dbname

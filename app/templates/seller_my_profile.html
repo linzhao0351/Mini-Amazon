@@ -1,11 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
-<p>
-    My Profile 
-</p>
+<h2> My Profile</h2>
 
-<p>
-    {{ info }}
-</p>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">User ID</th>
+      <th scope="col">First Name</th>
+      <th scope="col">Last Name </th>
+      <th scope="col">Email</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <th scope="row">{{info.id}}</th>
+        <td>{{info.firstname}}</td>
+        <td>{{info.lastname}}</td>
+        <td>{{info.email}}</td>
+      </tr>
+  </tbody>
+</table>
 {% endblock %}

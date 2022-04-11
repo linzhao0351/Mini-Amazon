@@ -1,11 +1,34 @@
 {% extends "base.html" %}
 
 {% block content %}
-<p>
-    My Inventory
-</p>
+<h2> My Inventory</h2>
+    <a class="btn btn-secondary" href="{{ url_for('seller.my_inventory_add_product') }}" role="button" >Add Product</a>
+    <a class="btn btn-secondary" href="{{ url_for('seller.analytics') }}" role="button" >My Product Analytics</a>
 
-<p>
-    {{ info }}
-</p>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Product ID</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Price</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Availability</th>
+      <th scope="col">Delete Product</th>
+      <th scope="col">Update Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in inventory%}
+      <tr>
+        <th scope="row">{{product.id}}</th>
+        <td>{{product.name}}</td>
+        <td>{{product.price}}</td>
+        <td>{{product.quantity}}</td>
+        <td>{{product.available}}</td>
+        <td><a href="{{ url_for('seller.delete_item', pid=product.id) }}">Delete</a></td>
+        <td><a href="{{ url_for('seller.update_inventory', pid=product.id) }}">Update</a></td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
 {% endblock %}

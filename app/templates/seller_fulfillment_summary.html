@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2> Number of Orders by Fulfillment Status</h2>
+
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Fulfillment Status</th>
+      <th scope="col">Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in num_fulfillment%}
+      <tr>
+        <th scope="row">{{item.fulfillment}}</th>
+        <td>{{item.num_fulfill}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h2> Average Revenue per Order</h2>
+
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Average Revenue</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in meanrev%}
+      <tr>
+        <th scope="row">{{item.averevenue}}</th>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,11 +1,34 @@
 {% extends "base.html" %}
 
 {% block content %}
-<p>
-    My Orders
-</p>
+<h2> My Orders</h2>
+<a class="btn btn-secondary" href="{{ url_for('seller.add_fake_order') }}" role="button" >Add Fake Order</a>
+<a class="btn btn-secondary" href="{{ url_for('seller.order_summary') }}" role="button" >Order Summary</a>
 
-<p>
-    {{ info }}
-</p>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Order ID</th>
+      <th scope="col">Buyer ID</th>
+      <th scope="col">Product ID</th>
+      <th scope="col">Price</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Time Purchased</th>
+      <th scope="col">Fulfillment Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for order in orders%}
+      <tr>
+        <th scope="row">{{order.id}}</th>
+        <th scope="row">{{order.uid}}</th>
+        <th scope="row">{{order.pid}}</th>
+        <td>{{order.price}}</td>
+        <td>{{order.quantity}}</td>
+        <td>{{order.time_purchased}}</td>
+        <td>{{order.fulfillment}} <a href="{{ url_for('seller.order_fulfill', order_id=order.id) }}" >Update</a>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
 {% endblock %}
