@@ -1,11 +1,67 @@
 {% extends "base.html" %}
 
 {% block content %}
-<p>
-    My Orders
-</p>
 
-<p>
-    {{ info }}
-</p>
+
+<br>
+<h1 class="fw-400 text-center mt-3 mb-4">My order history</h1>
+
+<style> 
+    input[type=submit]{
+      background-color: #4682B4;
+      color: white;
+      padding: 2px 4px;
+      text-decoration: none;
+      margin: 4px 2px;
+      cursor: pointer;
+    }
+</style>
+
+<div style="text-align:center">
+<form action="" method="post">
+        {{ form.hidden_tag() }}
+        {{ form.search(size=64, placeholder="Search your order (product name)")}}
+        {{ form.submit(class_="btn btn-black") }}
+</form>
+</div>
+
+<br><br>
+
+<div class="container bootdey">
+    <div class="panel-body">
+        <div class="row">
+
+            {% for order in orders %}
+
+            <div class="col-md-1"><img src= "https://cdn-icons-png.flaticon.com/512/2331/2331970.png" class="media-object img-thumbnail" /></div>
+            <div class="col-md-11">
+                <div class="row">
+                    <div class="col-md-12"><span><strong>Order ID: </a><font color="PaleVioletRed">{{order.order_id}}</font></strong></span></div>
+                    <div class="col-md-12">Product:<font color="PaleVioletRed">{{order.product_name}}</font></div>
+                    <div class="col-md-12">Amount: <font color="PaleVioletRed">${{order.total_amount}}</font></div>
+                    <div class="col-md-12">Purchased: <font color="PaleVioletRed">{{order.ts}}</font></div>
+                    <div class="col-md-12">Fulfillment status: <font color="PaleVioletRed">{{order.fulfillment_status}}</font></div>
+                    <div class="col-md-12">
+                        <form action = "{{ url_for('customer.display_orderID') }}" method="post">
+                            <a></a><font color="SteelBlue">View this order details</a></font>
+                            <input type="hidden" name="order_id" value={{order.order_id}} />
+                            <input type="submit" value="Click"/>
+                        </form>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+
+<br>
+<div style="text-align:center">
+<a href="{{ url_for('customer.customer_portal') }}" type="button" class="btn btn-light">Back to main menu</a>
+</div>
+<hr>
+
 {% endblock %}

@@ -1,11 +1,91 @@
 {% extends "base.html" %}
 
 {% block content %}
-<p>
-    My Profile
-</p>
+
+<br>
+<h1 class="fw-400 text-center mt-3 mb-4">Manage my profile</h1>
 
 <p>
-    {{ info }}
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+      {% for message in messages %}
+      <h3 class="text-center"> <font color="MediumSeaGreen">{{ message }}</font></h3>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
 </p>
+
+<div class="container">
+<div class="row gutters">
+<div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+<div class="card h-100">
+    <div class="card-body">
+        <div>
+            <div>
+                <div><img src="https://cdn-icons.flaticon.com/png/512/2763/premium/2763444.png?token=exp=1649020401~hmac=4ed9b2c432613b97e1bb56668b7b81ba" width="150" height="150" /></div>
+                <br>
+                <h5> <font color="PaleVioletRed"> {{cuser.firstname }} {{cuser.lastname}}</font></h5>
+                <h6>ID: <font color="PaleVioletRed">{{cuser.id}}</font></h6>
+                <h6>Email:  <font color="PaleVioletRed">{{cuser.email}}</font></h6>
+                <h6>Address: <font color="PaleVioletRed"> {{cuser.address}}</font></h6>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+<div class="card h-100">
+    <div class="card-body">
+        <div class="row gutters">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <h5 class="mb-2 text-primary"><font color="black"> Edit my profile</font></h5>
+            </div>
+
+            <form method="post">
+            {{ form.hidden_tag() }}
+
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                <div class="form-group">
+                    <label for="firstname">First name</label>
+                    {{ form.firstname(size=32, placeholder="Enter your new first name") }}
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                <div class="form-group">
+                    <label for="lastname">Last name</label>
+                    {{ form.lastname(size=32,  placeholder="Enter your new last name") }}
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                <div class="form-group">
+                    <label for="eMail">Email</label>
+                    {{ form.email(size=32, placeholder="Enter your new email") }}
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    {{ form.address(size=32, placeholder="Enter your new address") }}
+                </div>
+            </div>
+        </div>
+        <div class="row gutters">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="text-right">
+                    <a href="{{ url_for('customer.customer_portal') }}" type="button" class="btn btn-light">Back to main menu</a>
+                    {{ form.submit(class_="btn btn-black") }}      
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+
+
+
 {% endblock %}

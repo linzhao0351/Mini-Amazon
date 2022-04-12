@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, session
 from werkzeug.urls import url_parse
 from flask_login import login_user, logout_user, current_user
 from flask_wtf import FlaskForm
@@ -32,16 +32,23 @@ def login():
             flash('Invalid email or password')
             return redirect(url_for('users.login'))
 
-        user.identity = form.login_as.data
+        if form.login_as.data == '1':
+            session["identity"] = "customer"
+        elif form.login_as.data == '2':
+            session["identity"] = "seller"
+        else:
+            session["identity"] = "visitor"
+
         login_user(user)
 
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
-            print(type(user.identity))
-            if user.identity == '1': # customer
+            if form.login_as.data == 'customer': # customer
                 next_page = url_for('customer.customer')
-            else: # seller
+            elif form.login_as.data == 'seller': # seller
                 next_page = url_for('seller.seller_portal')
+            else:
+                next_page = url_for('index.index')
             
         return redirect(next_page)
     

@@ -23,7 +23,7 @@
         <th scope="row">{{product.id}}</th>
         <td>{{product.name}}</td>
         <td>{{product.price}}</td>
-        <td>{{product.quantity}}</td>
+        <td>{{product.units_avail}}</td>
         <td>{{product.available}}</td>
         <td><a href="{{ url_for('seller.delete_item', pid=product.id) }}">Delete</a></td>
         <td><a href="{{ url_for('seller.update_inventory', pid=product.id) }}">Update</a></td>

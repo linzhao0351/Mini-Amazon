@@ -4,14 +4,14 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from .. import login
 
+from .dal.api import dal_api as db
 
 class User(UserMixin):
-    def __init__(self, id, email, firstname, lastname, identity=1):
+    def __init__(self, id, email, firstname, lastname):
         self.id = id
         self.email = email
         self.firstname = firstname
         self.lastname = lastname
-        self.identity = identity
 
     @staticmethod
     def get_by_auth(email, password):
@@ -69,3 +69,25 @@ WHERE id = :id
 """,
                               id=id)
         return User(*(rows[0])) if rows else None
+
+#     @staticmethod
+#     def Update(id, email, firstname, lastname, address):
+#         rows = app.db.execute("""
+# UPDATE Users
+# SET email=:email, firstname=:firstname , lastname=:lastname, address=:address
+# WHERE id=:id
+# """,
+#                               id=id,
+#                               email =email, 
+#                               firstname =firstname, 
+#                               lastname =lastname, 
+#                               address =address)
+#         return "Success"
+    
+    @staticmethod
+    def get_proxy_id():
+        all_id = app.db.execute('''
+SELECT id
+FROM Users
+''')
+        return max(all_id)

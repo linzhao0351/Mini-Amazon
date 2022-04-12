@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<p>
+    Product Page
+</p>
+
+<br><br>
+<form action="" method="post">
+  {{ form.hidden_tag() }}
+  {{ form.qty}}
+  {{ form.submit(class_="btn btn-black") }}
+</form>
+
+<br><br>
+
+<p>
+    {{ info }}
+</p>
+{% endblock %}

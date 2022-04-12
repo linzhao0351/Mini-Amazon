@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br>
+<h1 class="fw-400 text-center mt-3 mb-4">Top up money</h1>
+
+<p>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <ul>
+    {% for message in messages %}
+    <h3 class="text-center"> <font color="MediumSeaGreen">{{ message }}</font></h3>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  {% endwith %}
+</p>
+
+
+<div>
+  <div class="text-center bg-primary p-4 rounded mb-4">
+    <h3 class="text-10 text-white fw-400">${{balance_info.balance}}</h3>
+    <p class="text-white">Available balance</p></div>
+    
+    <form method="post">
+
+    {{ form.hidden_tag() }}
+    <label>Amount</label>
+    <div class="input-group">
+      <span class="input-group-text">$</span>
+      {{ form.amount(size=64, placeholder="$1,516")}}
+      <span class="input-group-text p-0"><select class="selectpicker form-control bg-transparent"><option>USD</option>   
+        <select>
+        </select>
+    </div>
+    <p class="text-muted mt-4">Transactions fees <span class="float-end d-flex align-items-center">0.00 USD</span></p>
+
+    <hr>
+    
+    <a href="{{ url_for('customer.my_balance') }}" type="button" class="btn btn-light">Back to main menu</a>
+    {{ form.submit(class_="btn btn-black") }}
+
+  </form>
+</div>
+{% endblock %}

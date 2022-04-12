@@ -10,8 +10,7 @@ bp = Blueprint('seller', __name__)
 
 from .models.user import User
 from .models.inventory import Inventory
-from .models.purchase import Purchase
-from .models.seller_order_fulfillment import Fulfillment
+from .models.seller_order import SellerOrder
 
 
 @bp.route('/seller/account')
@@ -87,12 +86,19 @@ def analytics():
 	trendy_products = Purchase.get_trendy_prod(current_user.id)
 	return render_template('seller_analytics.html', products = products, trendy_products = trendy_products)
 
+
+
+
 ### order fulfillment
 # display order details
 @bp.route('/seller/account/my-orders', methods=['GET', 'POST'])
 def my_orders():
-	orders = Fulfillment.get(current_user.id)
+	orders = SellerOrder.get(current_user.id)
 	return render_template('seller_my_orders.html', orders = orders)
+
+
+
+
 
 # edit fake order info [can be deleted later]
 class OrderForm(FlaskForm):

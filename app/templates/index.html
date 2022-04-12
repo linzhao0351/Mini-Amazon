@@ -23,8 +23,10 @@
   <tbody>
     {% for product in avail_products%}
       <tr>
-        <th scope="row">{{product.id}}</th>
-        <td>{{product.name}}</td>
+        <th scope="row">{{product.product_id}}</th>
+        <td>
+            <a href="{{ url_for('product.display_product', product_id=product.product_id) }}">{{product.name}}</a>
+        </td>
         <td>{{product.price}}</td>
       </tr>
     {% endfor %}

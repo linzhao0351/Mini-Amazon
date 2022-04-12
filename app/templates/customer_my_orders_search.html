@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style> 
+    input[type=submit]{
+      background-color: #4682B4;
+      color: white;
+      padding: 2px 4px;
+      text-decoration: none;
+      margin: 4px 2px;
+      cursor: pointer;
+    }
+</style>
+
+{% if no_match %}
+
+<p>
+    No matched product
+</p>
+{% else %}
+
+<br>
+<h1 class="fw-400 mt-3 mb-4">My order history for <strong><font color="PaleVioletRed"> "{{ search }}" </font></strong></h1>
+<br>
+
+{% for order in results %}
+
+    <div class="col-md-1"><img src= "https://cdn-icons-png.flaticon.com/512/2331/2331970.png" class="media-object img-thumbnail" /></div>
+    <div class="col-md-11">
+        <div class="row">
+            <div class="col-md-12"><span><strong>Order ID: <font color="PaleVioletRed">{{order.order_id}}</font></strong></span></div>
+            <div class="col-md-12">Product: <font color="PaleVioletRed">{{order.product_name}} </font></div>
+            <div class="col-md-12">Amount: <font color="PaleVioletRed">${{order.total_amount}} </font></div>
+            <div class="col-md-12">Purchased: <font color="PaleVioletRed">{{order.time_stamp}}</font></div>
+            <div class="col-md-12">Fulfillment status: <font color="PaleVioletRed">{{order.fulfillment_status}}</font></div>
+            <div class="col-md-12">
+                <form action = "{{ url_for('customer.display_orderID') }}" method="post">
+                    <a></a><font color="SteelBlue">View this order details</a></font>
+                    <input type="hidden" name="order_id" value={{order.order_id}} />
+                    <input type="submit" value="Click"/>
+                </form>
+            </div>
+            <hr>
+        </div>
+    </div>
+
+{% endfor %}
+{% endif %}
+
+<br>
+<div style="text-align:center">
+<a href="{{ url_for('customer.my_orders') }}" type="button" class="btn btn-light">Back to my order</a>
+<hr>
+</div>
+
+{% endblock %}

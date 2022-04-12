@@ -9,7 +9,7 @@
     <a href="{{ url_for('customer.my_cart') }}">
         My Cart
     </a> <br/>
-    <a href="{{ url_for('customer.my_orders') }}">
+    <a href="{{ url_for('customer.my_orders', user_id=current_user.id) }}">
         My Orders
     </a> <br/>
     <a href="{{ url_for('customer.my_profile') }}">
@@ -17,6 +17,9 @@
     </a> <br/>
     <a href="{{ url_for('customer.my_messages') }}">
         My Messages
+    </a> <br/>
+    <a href="{{ url_for('customer.public_profile') }}">
+        My Public profile
     </a> <br/>
 </p>
 {% endblock %}
