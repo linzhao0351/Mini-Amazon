@@ -11,7 +11,7 @@
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
-      <th scope="col">Product ID1</th>
+      <th scope="col">Product ID</th>
       <th scope="col">Product Name</th>
       <th scope="col">Price</th>
       <th scope="col">Quantity</th>
@@ -21,9 +21,9 @@
   <tbody>
     {% for item in cart_form.items %}
       <tr>
-        <th scope="row">{{ item_info[item.product_id]["product_name"] }}</th>
-        <td>{{ item_info[item.product_id]["product_name"] }}</td>
-        <td>{{ item_info[item.product_id]["price] }}</td>
+        <th scope="row">{{ item.product_id.data }}</th>
+        <td>{{ item.product_name.data }}</td>
+        <td>{{ item.price.data }}</td>
         <td>{{ item.quantity }}</td>
         <td><a href="{{ url_for('customer.delete_item', product_id=item.product_id.data) }}">Delete Item</a></td>
       </tr>
@@ -35,9 +35,13 @@
 
 </form>
 
+<br>
+
 <form action="" method="post">
     <input type="submit" name="Clear" value="Clear Cart">
 </form>
+
+<br>
 
 <form action="" method="post">
     <input type="submit" name="Submit" value="Place Your Order">
