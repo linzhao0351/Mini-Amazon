@@ -62,6 +62,9 @@ def my_cart():
 		return redirect(url_for('customer.order_summary'))
 
 	cart = Cart.get(current_user.id)
+
+	item_info = {}
+
 	for item in cart:
 		item_form = ItemForm()
 		item_form.product_id = item.product_id
@@ -70,13 +73,18 @@ def my_cart():
 		item_form.quantity = item.quantity
 
 		cart_form.items.append_entry(item_form)
+		
+		item_info[product_id] = {"product_id": item.product_id,
+								 "product_name": item.product_name,
+								 "price": item.price,
+								 "quantity": item.quantity}
 
 	if 'msg' in request.args:
 		msg = request.args['msg']
 	else:
 		msg = ""
 
-	return render_template('customer_my_cart.html', cart_form=cart_form, msg=msg)
+	return render_template('customer_my_cart.html', cart_form=cart_form, item_info=item_info, msg=msg)
 
 
 @bp.route('/customer/account/my-cart/delete/<product_id>', methods=['GET', 'POST'])
