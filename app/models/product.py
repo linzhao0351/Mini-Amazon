@@ -2,7 +2,7 @@ from flask import current_app as app
 
 
 class Product:
-    def __init__(self, product_id, seller_id, name, price, units_avail, available, short_desc, long_desc):
+    def __init__(self, product_id, seller_id, name, price, units_avail, available, short_desc, long_desc, type_id):
         self.product_id = product_id
         self.seller_id = seller_id
         self.name = name
@@ -11,6 +11,7 @@ class Product:
         self.available = available
         self.short_desc = short_desc
         self.long_desc = long_desc
+        self.type_id = type_id
 
     @staticmethod
     def get(product_id):

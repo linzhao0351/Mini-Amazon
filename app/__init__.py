@@ -26,9 +26,6 @@ def create_app():
     from .users import bp as user_bp
     app.register_blueprint(user_bp)
 
-    from .search import bp as search_bp
-    app.register_blueprint(search_bp)
-
     from .customer import bp as customer_bp
     app.register_blueprint(customer_bp)
 

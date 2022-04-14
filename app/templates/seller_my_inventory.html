@@ -12,6 +12,7 @@
       <th scope="col">Product Name</th>
       <th scope="col">Price</th>
       <th scope="col">Quantity</th>
+      <th scope="col">Product Type</th>
       <th scope="col">Availability</th>
       <th scope="col">Delete Product</th>
       <th scope="col">Update Details</th>
@@ -24,6 +25,7 @@
         <td>{{product.name}}</td>
         <td>{{product.price}}</td>
         <td>{{product.units_avail}}</td>
+        <td>{{product.ptype}}</td>
         <td>{{product.available}}</td>
         <td><a href="{{ url_for('seller.delete_item', pid=product.id) }}">Delete</a></td>
         <td><a href="{{ url_for('seller.update_inventory', pid=product.id) }}">Update</a></td>

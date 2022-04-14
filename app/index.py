@@ -1,18 +1,27 @@
-from flask import render_template
+from flask import render_template, redirect, url_for, flash, request
 from flask_login import current_user
 import datetime
 
-from .models.product import Product
-from .models.purchase import Purchase
+from flask_wtf import FlaskForm
+from wtforms import StringField, SelectField, SubmitField
+from wtforms.validators import DataRequired, ValidationError
 
-from .search import SearchForm
+from .models.product import Product
+from .models.search import Search
+
 from .models.recommend import Recommend
 
 from flask import Blueprint
 bp = Blueprint('index', __name__)
 
 
-@bp.route('/')
+class SearchForm(FlaskForm):
+    search_kw = StringField('Search', validators=[DataRequired()])
+    typelist = SelectField('Category')
+    submit = SubmitField('Search')
+
+
+@bp.route('/', methods=['GET', 'POST'])
 def index():
     # get all available products for sale:
     products = Product.get_all(True)
@@ -40,8 +49,25 @@ def index():
         no_most_viewed = None
 
     form = SearchForm()
+    form.typelist.choices = Search.get_all_types()
+    if form.validate_on_submit():
+        return redirect(url_for('index.display_product', search_kw=form.search_kw.data, type_id=form.typelist.data ))
+
     return render_template('index.html',
                            avail_products=products,
                            form=form, 
                            recent_viewed=recent_viewed, no_recent_viewed=no_recent_viewed,
                            most_viewed=most_viewed, no_most_viewed=no_most_viewed)
+
+
+@bp.route('/result_page', methods=['GET', 'POST'])
+def display_product():
+    search_kw = request.args['search_kw']
+    type_id = request.args['type_id']
+
+    matched_products = Search.search_product(search_kw, type_id)
+    no_match = matched_products is None
+
+    return render_template('search.html', title='Search Result', results=matched_products, 
+                                                                 no_match=no_match, 
+                                                                 search_kw=search_kw)

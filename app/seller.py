@@ -2,7 +2,7 @@
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import current_user
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, FormField, FieldList, IntegerField, BooleanField, TextAreaField
+from wtforms import StringField, SubmitField, FormField, FieldList, IntegerField, BooleanField, TextAreaField, SelectField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from datetime import datetime
 from flask import Blueprint
@@ -13,6 +13,7 @@ from .models.inventory import Inventory
 from .models.seller_order import SellerOrder
 from .models.analytics import Analytics
 from .models.review import Product_Review, Seller_Review
+from .models.search import Search
 
 @bp.route('/seller/account')
 def seller_portal():
@@ -43,6 +44,7 @@ class ItemForm(FlaskForm):
 	available = BooleanField('Available')
 	short_desc = TextAreaField('Short Description')
 	long_desc = TextAreaField('Long Description')
+	type_id = SelectField('Category')
 	submit = SubmitField('Add Item')
 
 @bp.route('/seller/account/my-inventory', methods=['GET', 'POST'])
@@ -54,6 +56,7 @@ def my_inventory():
 @bp.route('/seller/account/my-inventory/add_product', methods=['GET', 'POST'])
 def my_inventory_add_product():
 	form = ItemForm()
+	form.type_id.choices = Search.get_all_types()
 	if form.validate_on_submit():
 		Inventory.add_product(current_user.id, 
 							  form.name.data, 
@@ -61,7 +64,8 @@ def my_inventory_add_product():
 							  form.quantity.data, 
 							  form.available.data,
 							  form.short_desc.data,
-							  form.long_desc.data)
+							  form.long_desc.data,
+							  form.type_id.data)
 		return redirect(url_for('seller.my_inventory'))
 	return render_template('seller_add_product.html', form=form)
 
@@ -70,6 +74,7 @@ class InventoryUpdateForm(FlaskForm):
 	price = StringField('New Price')
 	submit = SubmitField('Update Price')	
 	quantity = StringField('New Quantity')
+	type_id = SelectField('Category')
 	available = BooleanField('Available')
 	short_desc = TextAreaField('Short Description')
 	long_desc = TextAreaField('Long Description')
@@ -79,13 +84,15 @@ class InventoryUpdateForm(FlaskForm):
 def update_inventory(pid):
 	inventory = Inventory.get_product(pid, current_user.id)
 	form = InventoryUpdateForm()
+	form.type_id.choices = Search.get_all_types()
 	if form.validate_on_submit():
 		Inventory.update(pid, current_user.id, 
 						form.price.data,
 						form.quantity.data,
 						form.available.data,
 						form.short_desc,
-						form.long_desc)
+						form.long_desc,
+						form.type_id)
 		return redirect(url_for('seller.my_inventory'))
 	return render_template('seller_update_inventory.html', inventory=inventory, form=form)
 

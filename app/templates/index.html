@@ -4,8 +4,9 @@
 
 <br><br>
 <form action="" method="post">
+  {{ form.typelist(size=1) }}
   {{ form.hidden_tag() }}
-  {{form.search_kw(size=64)}}
+  {{ form.search_kw(size=64) }}
   {{ form.submit(class_="btn btn-black") }}
 </form>
 
