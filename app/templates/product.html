@@ -2,20 +2,148 @@
 
 {% block content %}
 
-<p>
-    Product Page
-</p>
+
+<!-- <style>
+  button:hover{
+    background:rgb(3, 151, 250);
+}
+button:focus{background-color:rgb(3, 151, 250);}
+
+</style> -->
 
 <br><br>
+
+
+<div style="text-align:right">
 <form action="" method="post">
   {{ form.hidden_tag() }}
-  {{ form.qty}}
+  Qty:
+  {{ form.qty }}
   {{ form.submit(class_="btn btn-black") }}
 </form>
+</div>
+
+
+<div class="container bootdey">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-4"><img src= "https://cdn-icons-png.flaticon.com/512/2331/2331970.png" style="width:200px;height:200px;" /></div>
+
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-12"><span><strong><h2>{{product_info.name}}</h2></strong></span></div>
+                    <div class="col-md-12">Price: <font color="PaleVioletRed">${{product_info.price}}</font></div>
+                    <div class="col-md-12">Total reivews: <font color="PaleVioletRed">{{count}}</font></div>
+                    <div class="col-md-12">Average rating: <font color="PaleVioletRed">{{avg}}</font></div>
+                    <div class="col-md-12">About this item:</div>
+                    <div class="col-md-12">{{ product_info.short_desc }}</div>
+                    <hr>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <br><br>
 
+<h5>Product Description</h5>
+<hr>
 <p>
-    {{ info }}
+  {{ product_info.long_desc }}
 </p>
+
+
+<br><br>
+
+
+<h5>Most Helpful Reviews</h5>
+<p>
+  <table class="table">
+    <thead>
+      <tr>
+      <th scope="col">User</th>
+      <th scope="col">Rating</th>
+      <th scope="col">Review</th>
+      <th scope="col">Upvotes</th>
+      <th scope="col">Upvote</th>
+      </tr>
+    </thead>
+    {% for review in top_upvotes %}
+    <tr>
+    <td>
+      <a href="{{ url_for('customer.public_profile', buyer_id=review.buyer_id) }}">{{review.buyer_id}}</a>
+    </td>
+    <td>{{review.rating}}
+    </td>
+    <td>{{review.review_content}}
+    </td>
+    <td>{{review.upvote}}
+    </td>
+    <td>
+      <form action="" method="POST">
+        <button type="submit" name="Upvote_1" value = "{{review.review_id}}"> Mark as helpful </button>
+      </form>
+    </td>
+    </tr>
+    {% endfor %}
+  </table>
+</p>
+
+
+<br><br>
+
+<h5>Reviews for this product</h5>
+<p>
+  <table class="table">
+    <thead>
+      <tr>
+      <th scope="col">User</th>
+      <th scope="col">Rating</th>
+      <th scope="col">Review</th>
+      <th scope="col">Upvotes</th>
+      <th scope="col">Upvote</th>
+      </tr>
+    </thead>
+    {% for review in most_recent %}
+    <tr>
+    {% if current_user_id == review.buyer_id %}
+      <th scope="row">
+        <a href="{{ url_for('review.edit_review', product_id=info) }}">Edit your review</a>
+      </th>
+    {% else %}
+      <th scope="row">{{review.buyer_id}}</th>
+    {%endif%}
+    <td>{{review.rating}}
+    </td>
+    <td>{{review.review_content}}
+    </td>
+    <td>{{review.upvote}}
+    </td>
+    <td>
+      <form action="" method="POST">
+        <button type="submit" name="Upvote_2" value = "{{review.review_id}}"> Mark as helpful </button>
+      </form>
+    </td>
+    </tr>
+    {% endfor %}
+  </table>
+</p>
+<script>
+  function colorchange(id)
+  {
+  
+    var background = document.getElementById(id).style.backgroundColor;
+  
+    if(background == "rgb(255, 145, 0)")
+    {
+    document.getElementById(id).style.backgroundColor = "rgb(26,255,0)";
+    }
+    if(background == "rgb(26, 255, 0)")
+    {
+      document.getElementById(id).style.backgroundColor = "rgb(255,145,0)";
+    }
+  
+  }
+  </script>
 {% endblock %}

@@ -2,33 +2,63 @@
 
 {% block content %}
 <h2> My Orders</h2>
-<a class="btn btn-secondary" href="{{ url_for('seller.add_fake_order') }}" role="button" >Add Fake Order</a>
+
+{% if is_none %}
+
+<p>
+  You don't have any orders yet
+</p>
+
+{% else %}
+
 <a class="btn btn-secondary" href="{{ url_for('seller.order_summary') }}" role="button" >Order Summary</a>
+
+<br><br>
+
+{% for order_id in orders_dict.keys() %}
+
+<p>
+  Order ID: {{order_id}}
+</p>
+<p>
+  Time: {{ orders_summary[order_id].ts }}
+</p>
+<p>
+  Buyer Name: {{ orders_summary[order_id].lastname, orders_summary[order_id].firstname }}
+</p>
+<p>
+  Buyer Address: {{ orders_summary[order_id].address }}
+</p>
 
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
-      <th scope="col">Order ID</th>
-      <th scope="col">Buyer ID</th>
       <th scope="col">Product ID</th>
       <th scope="col">Price</th>
       <th scope="col">Quantity</th>
-      <th scope="col">Time Purchased</th>
       <th scope="col">Fulfillment Status</th>
+      <th scope="col">Update Status</th>
     </tr>
   </thead>
   <tbody>
-    {% for order in orders%}
+    {% for item in orders_dict[order_id] %}
       <tr>
-        <th scope="row">{{order.id}}</th>
-        <th scope="row">{{order.uid}}</th>
-        <th scope="row">{{order.pid}}</th>
-        <td>{{order.price}}</td>
-        <td>{{order.quantity}}</td>
-        <td>{{order.time_purchased}}</td>
-        <td>{{order.fulfillment}} <a href="{{ url_for('seller.order_fulfill', order_id=order.id) }}" >Update</a>
+        <th scope="row">{{item.product_id}}</th>
+        <td>{{item.price}}</td>
+        <td>{{item.quantity}}</td>
+        <td>{{item.fulfillment_status}} </td>
+        <td>
+          <a href="{{ url_for('seller.order_fulfill', order_id=order_id, product_id=item.product_id) }}" >Update</a>
+        </td>
       </tr>
     {% endfor %}
   </tbody>
 </table>
+
+
+{% endfor %}
+
+{% endif %}
+
+
 {% endblock %}

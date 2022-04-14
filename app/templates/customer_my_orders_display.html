@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<p>
+  Order ID: {{ order_id }}
+</p>
+
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Product ID</th>
+      <th scope="col">Price</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Fulfillment Status</th>
+      <th scope="col">Cancel product</th>
+      <th scope="col">Review Product</th>
+      <th scope="col">Review Seller</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in order %}
+      <tr>
+        <th scope="row">{{item.product_id}}</th>
+        <td>{{item.price}}</td>
+        <td>{{item.quantity}}</td>
+        <td>{{item.fulfillment_status}}</td>
+        <td>
+          {% if item.fulfillment_status == 1 %}
+            Cannot cancel now
+          {% else %}
+            <a href="{{ url_for('customer.cancel_item', order_id=order_id, product_id=item.product_id) }}">Cancel</a>
+          {% endif %}
+        </td>
+        <td>
+          <a href="{{ url_for('review.write_review', product_id=item.product_id) }}">Write Review</a>
+        </td>
+        <td>
+          <a href="{{ url_for('review.write_seller_review', seller_id=item.seller_id) }}">Write Review</a>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+
+{% endblock %}

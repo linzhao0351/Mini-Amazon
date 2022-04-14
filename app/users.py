@@ -43,13 +43,13 @@ def login():
 
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
-            if form.login_as.data == 'customer': # customer
-                next_page = url_for('customer.customer')
-            elif form.login_as.data == 'seller': # seller
+            if form.login_as.data == '1': # customer
+                next_page = url_for('index.index')
+            elif form.login_as.data == '2': # seller
                 next_page = url_for('seller.seller_portal')
             else:
                 next_page = url_for('index.index')
-            
+        
         return redirect(next_page)
     
     return render_template('login.html', title='Sign In', form=form)
@@ -63,6 +63,8 @@ class RegistrationForm(FlaskForm):
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(),
                                        EqualTo('password')])
+    nickname = StringField('Nickname', validators=[DataRequired()])
+    address = StringField('Address', validators=[DataRequired()])
     submit = SubmitField('Register')
 
     def validate_email(self, email):
@@ -79,7 +81,9 @@ def register():
         if User.register(form.email.data,
                          form.password.data,
                          form.firstname.data,
-                         form.lastname.data):
+                         form.lastname.data,
+                         form.nickname.data,
+                         form.address.data):
             flash('Congratulations, you are now a registered user!')
             return redirect(url_for('users.login'))
     return render_template('register.html', title='Register', form=form)

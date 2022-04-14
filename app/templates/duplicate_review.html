@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<p>
+    You have already reviewed this product. Please delete/update your existing review instead.
+</p>
+<br>
+<a href="{{ url_for('product.display_product', product_id = product_id) }}">Return to Product Page</a>
+
+
+{% endblock %}

@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, flash
 from flask_login import current_user, login_user, logout_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, FormField, FieldList, IntegerField, PasswordField, BooleanField, SelectField
@@ -10,7 +10,10 @@ from werkzeug.urls import url_parse
 from .models.cart import Cart
 from .models.recommend import Recommend
 from .models.user import User
-from .models.order import Orders, Search
+from .models.buyer_order import Orders, Search
+from .models.review import Product_Review, Seller_Review
+
+from datetime import date
 
 from flask import Blueprint
 bp = Blueprint('customer', __name__)
@@ -18,30 +21,6 @@ bp = Blueprint('customer', __name__)
 
 
 ##### Lin's Part
-
-@bp.route('/customer')
-def customer():
-	if current_user.is_authenticated:
-		recent_viewed = Recommend.rec_recent_viewed_item(current_user.id)
-		no_recent_viewed = recent_viewed is None
-		if no_recent_viewed:
-			pass
-		else:
-			recent_viewed = recent_viewed[0:min(len(recent_viewed),5)]
-
-		most_viewed = Recommend.rec_most_viewed_item(current_user.id)
-		no_most_viewed = most_viewed is None
-		if no_most_viewed:
-			pass
-		else:
-			most_viewed = most_viewed[0:min(len(most_viewed),5)]
-
-		return render_template('customer.html', recent_viewed=recent_viewed, no_recent_viewed=no_recent_viewed,
-												most_viewed=most_viewed, no_most_viewed=no_most_viewed)
-	else:
-		return redirect(url_for('index.index'))
-
-
 @bp.route('/customer/account', methods=['GET', 'POST'])
 def customer_portal():
 	if current_user.is_authenticated:
@@ -92,7 +71,12 @@ def my_cart():
 
 		cart_form.items.append_entry(item_form)
 
-	return render_template('customer_my_cart.html', cart_form=cart_form)
+	if 'msg' in request.args:
+		msg = request.args['msg']
+	else:
+		msg = ""
+
+	return render_template('customer_my_cart.html', cart_form=cart_form, msg=msg)
 
 
 @bp.route('/customer/account/my-cart/delete/<product_id>', methods=['GET', 'POST'])
@@ -104,19 +88,46 @@ def delete_item(product_id):
 @bp.route('/customer/account/my-cart/order_summary', methods=['GET', 'POST'])
 def order_summary():
 	cart = Cart.get(current_user.id)
+
+	msg = Cart.check_avail(cart)
+	if msg != "Valid":
+		return redirect(url_for('customer.my_cart', msg=msg))
+
 	total_amount = sum([item.quantity * item.price for item in cart])
+	msg = Cart.check_balance(current_user.id, total_amount)
+	if msg != "Valid":
+		return redirect(url_for('customer.my_cart', msg=msg))
+
 
 	if "Submit" in request.form:
 		try:
-			order_id = Cart.submit_aggregate(total_amount)
+			order_id = Cart.submit_aggregate(current_user.id, total_amount)
 		except:
 			return redirect(url_for('customer.order_summary'))
 
 		try:
-			Cart.submit_detail(current_user.id, order_id, cart) 
-		except:
+			Cart.submit_detail(order_id, cart) 
+		except Exception as e:
+			print(str(e))
 			Cart.retract_order(order_id)
 			return redirect(url_for('customer.order_summary'))
+
+		try:
+			Cart.update_inventory(cart) 
+		except Exception as e:
+			print(str(e))
+			Cart.retract_order(order_id)
+			return redirect(url_for('customer.order_summary'))		
+
+		try:
+			Cart.update_balance(current_user.id, total_amount) 
+			Cart.update_seller_balance(cart)
+		except Exception as e:
+			print(str(e))
+			Cart.retract_order(order_id)
+			return redirect(url_for('customer.order_summary'))		
+
+
 
 		Cart.clear(current_user.id)
 		return redirect(url_for('customer.success_order', order_id=order_id))
@@ -127,34 +138,30 @@ def order_summary():
 def success_order(order_id):
 	return render_template('success_order.html', order_id=order_id)
 
+@bp.route('/customer/account/my-cart/cancel/<order_id>/<product_id>', methods=['GET', 'POST'])
+def cancel_item(order_id, product_id):
+	Cart.cancel_item(current_user.id, order_id, product_id)
+	return redirect(url_for('customer.my_orders'))
+
 
 
 ### Mae's Part
 
 class Update_profile(FlaskForm):
-	address = StringField('address', validators=[DataRequired()])
 	firstname = StringField('firstname', validators=[DataRequired()])
 	lastname = StringField('lastname', validators=[DataRequired()])
 	email = StringField('email', validators=[Email(), DataRequired()])
+	nickname = StringField('nickname', validators=[DataRequired()])
+	address = StringField('address', validators=[DataRequired()])
 	submit = SubmitField('Update', validators=[DataRequired()])
 
 class Search_order(FlaskForm):
 	search = StringField('Search', validators=[DataRequired()])
 	submit = SubmitField('Search')
 
-class balance_topup(FlaskForm):
-	amount = StringField('amount', validators=[DataRequired()])
-	submit = SubmitField('Top up')
-
-class balance_withdraw(FlaskForm):
-	amount = StringField('amount', validators=[DataRequired()])
-	submit = SubmitField('Withdraw')
-	
-
-@bp.route('/customer/public_profile')
-def public_profile():
-	cuser = User.get(current_user.id)
-
+@bp.route('/public_profile/customer/<buyer_id>')
+def public_profile(buyer_id):
+	cuser = User.get(buyer_id)
 	return render_template('customer_public_profile.html', cuser = cuser)
 
 
@@ -168,9 +175,10 @@ def my_profile():
 		email = form.email.data 
 		firstname = form.firstname.data
 		lastname = form.lastname.data
+		nickname = form.nickname.data
 		address = form.address.data
 
-		User.Update(id, email, firstname, lastname, address)
+		User.Update(id, email, firstname, lastname, address, nickname, address)
 		cuser = User.get(current_user.id)
 
 		flash('Your profile is updated!')
@@ -179,75 +187,16 @@ def my_profile():
 	return render_template('customer_my_profile.html', form=form, cuser=cuser)
 
 
-@bp.route('/customer/account/my-balance')
-def my_balance():
-	balance_info = Balance.get(current_user.id)
-	balance_info_all = Balance.get_all(current_user.id)
-
-	return render_template('customer_my_balance.html', balance_info = balance_info, balance_info_all=balance_info_all)
-
-
-@bp.route('/customer/account/my-balance/withdraw', methods=('GET', 'POST'))
-def my_balance_withdraw():
-	balance_info_all = Balance.get_lastrow()
-	balance_info = Balance.get(current_user.id)
-
-	form = balance_withdraw()
-	if form.validate_on_submit():
-		trans_id = balance_info_all.trans_id + 1
-		trans_date = date.today()
-		user_id = current_user.id
-		trans = form.amount.data
-		trans_description = 'Withdraw from bank account'
-		balance = float(balance_info.balance) - float(trans)
-		if balance < 0:
-			flash('Withdrawal fail! (You can withdraw up to the available balance)')
-			return redirect(url_for('customer.my_balance_withdraw'))
-
-		else:
-			Update_balance.insert(trans_id, trans_date, user_id, trans, trans_description, balance)
-			balance_info = Balance.get(current_user.id)
-			
-			flash('Withdrawal successful!')
-			return render_template('customer_my_balance_withdraw.html', balance_info = balance_info, form=form)
-
-	return render_template('customer_my_balance_withdraw.html', balance_info = balance_info, form=form)
-
-
-@bp.route('/customer/account/my-balance/topup', methods=('GET', 'POST'))
-def my_balance_topup():
-	balance_info_all = Balance.get_lastrow()
-	balance_info = Balance.get(current_user.id)
-
-	form = balance_topup()
-	if form.validate_on_submit():
-		trans_id = balance_info_all.trans_id + 1
-		trans_date = date.today()
-		user_id = current_user.id
-		trans = form.amount.data
-		balance = float(balance_info.balance) + float(trans)
-		trans_description ='Deposit from bank account'
-		
-		Update_balance.insert(trans_id, trans_date, user_id, trans, trans_description, balance)
-		balance_info = Balance.get(current_user.id)
-
-		flash('Topup successful!')
-
-		return render_template('customer_my_balance_topup.html', balance_info = balance_info, form=form)
-
-	return render_template('customer_my_balance_topup.html', balance_info = balance_info, form=form)
-
-
 @bp.route('/customer/account/my-orders', methods=['GET', 'POST'])
 def my_orders():
-	cuser = User.get(current_user.id)
-	orders = Orders.get(current_user.id)
+	orders_summary = Orders.get_order_summary(current_user.id)
 
 	form = Search_order()
 	if form.validate_on_submit():
 		return redirect(url_for('customer.display_history', search=form.search.data, cuser=cuser, orders=orders,form=form ))
 	
-	return render_template('customer_my_orders.html',cuser=cuser, orders=orders, form=form)
+	return render_template('customer_my_orders.html', orders_summary=orders_summary, form=form)
+
 
 @bp.route('/customer/account/my-orders/result_page', methods=['GET', 'POST'])
 def display_history():
@@ -262,12 +211,12 @@ def display_history():
 	return render_template('customer_my_orders_search.html',
 							results=matched_order, no_match=no_match, search=search, form=form)
 
-@bp.route('/customer/account/my-orders/order_details', methods=['GET', 'POST'])
-def display_orderID(order_id=None):
-	if order_id is None:
-		order_id = request.form['order_id']
 
-	return render_template('customer_my_orders_display.html', order_id=order_id)
+@bp.route('/customer/account/my-orders/order_details/<order_id>', methods=['GET', 'POST'])
+def display_order_detail(order_id):
+	order = Orders.get_order_detail(order_id)
+
+	return render_template('customer_my_orders_display.html', order_id=order_id, order=order)
 
 
 ##### Harsha's Part
@@ -275,4 +224,13 @@ def display_orderID(order_id=None):
 def my_messages():
 	msg = "Hello world!"
 	return render_template('customer_my_messages.html', info = msg)
+
+
+@bp.route('/customer/account/my-reviews')
+def my_reviews():
+	all_reviews = Product_Review.get_all_reviews(current_user.id)
+	all_seller_reviews = Seller_Review.get_all_reviews(current_user.id)
+	return render_template('customer_my_reviews.html', info = current_user.id, all_reviews = all_reviews, all_seller_reviews=all_seller_reviews)
+
+
 

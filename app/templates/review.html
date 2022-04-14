@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<p>
+    Review Page
+</p>
+<style>
+  input[type="text"], input[type="password"], textarea, select {
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    color: gray;
+    display: inline-block;
+    font-size: 13px;
+    height: 80px;
+    line-height: 18px;
+    padding: 4px;
+    width: 250px;
+}
+</style>
+
+<br><br>
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <p>
+      {{ form.review.label }}<br/>
+      {{ form.review(size=32) }}<br/>
+      {% for error in form.review.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
+    </p>
+    <p>
+      {{ form.rating.label }}<br/>
+      {{ form.rating(size=32) }}<br/>
+      {% for error in form.review.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
+    </p>
+    <p>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+          {% for category, message in messages %}
+              <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                  <span>{{ message }}</span>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                  </button>
+              </div>
+          {% endfor %}
+      {% endif %}
+  {% endwith %}
+    </p>
+    <!-- <form method="post">{{ form.submit(class_="btn btn-black") }}</form> -->
+    <form action="" method="post">
+      <input type="submit" name="Submit_review" value="Submit your review">
+    </form>
+    <!-- <p><input type=submit value='Submit your review'> -->
+  </form>
+
+<br><br>
+
+
+
+{% endblock %}

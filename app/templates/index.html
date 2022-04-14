@@ -11,24 +11,102 @@
 
 <br><br>
 
-<h2>Products for sale:</h2>
+{% if current_user.is_authenticated %}
+<h5>Recently viewed</h5>
+
+{% if no_recent_viewed %}
+<p>
+    You didn't view products recently
+</p>
+{% else %}
+
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
-      <th scope="col">Product ID</th>
       <th scope="col">Product Name</th>
       <th scope="col">Price</th>
+      <th scope="col">Seller</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in recent_viewed %}
+      <tr>
+        <td>
+            <a href="{{ url_for('product.display_product', product_id=product.product_id) }}">{{product.name}}</a>
+        </td>
+        <td>
+            {{product.price}}
+        </td>
+        <td>
+            <a href="{{ url_for('seller.public_profile', seller_id=product.seller_id) }}">{{product.seller_id}}</a>
+        </td>       
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endif %}
+
+
+<br><br>
+
+<h5>Products you may like</h5>
+
+{% if no_most_viewed %}
+<p>
+    You didn't see any products yet.
+</p>
+{% else %}
+
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Product Name</th>
+      <th scope="col">Price</th>
+      <th scope="col">Seller</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in most_viewed %}
+      <tr>
+        <td>
+            <a href="{{ url_for('product.display_product', product_id=product.product_id) }}">{{product.name}}</a>
+        </td>
+        <td>{{product.price}}</td>
+        <td>
+            <a href="{{ url_for('seller.public_profile', seller_id=product.seller_id) }}">{{product.seller_id}}</a>
+        </td>          
+      </tr>      
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endif %}
+
+{% endif %}
+
+<br><br>
+
+<h5>Products for sale:</h5>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Product Name</th>
+      <th scope="col">Price</th>
+      <th scope="col">Seller</th>      
     </tr>
   </thead>
   <tbody>
     {% for product in avail_products%}
       <tr>
-        <th scope="row">{{product.product_id}}</th>
         <td>
             <a href="{{ url_for('product.display_product', product_id=product.product_id) }}">{{product.name}}</a>
         </td>
         <td>{{product.price}}</td>
-      </tr>
+        <td>
+            <a href="{{ url_for('seller.public_profile', seller_id=product.seller_id) }}">{{product.seller_id}}</a>
+        </td>         
+      </tr>   
     {% endfor %}
   </tbody>
 </table>

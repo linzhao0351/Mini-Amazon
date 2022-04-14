@@ -28,6 +28,7 @@
                 <br>
                 <h5> <font color="PaleVioletRed"> {{cuser.firstname }} {{cuser.lastname}}</font></h5>
                 <h6>ID: <font color="PaleVioletRed">{{cuser.id}}</font></h6>
+                h6>ID: <font color="PaleVioletRed">{{cuser.nickname}}</font></h6>
                 <h6>Email:  <font color="PaleVioletRed">{{cuser.email}}</font></h6>
                 <h6>Address: <font color="PaleVioletRed"> {{cuser.address}}</font></h6>
             </div>
@@ -64,6 +65,12 @@
                     {{ form.email(size=32, placeholder="Enter your new email") }}
                 </div>
             </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                <div class="form-group">
+                    <label for="address">Nickname</label>
+                    {{ form.address(size=32, placeholder="Enter your new nickname") }}
+                </div>
+            </div>            
             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                 <div class="form-group">
                     <label for="address">Address</label>

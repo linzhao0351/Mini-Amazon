@@ -44,9 +44,9 @@ WHERE user_id=:user_id AND product_id=:product_id
 	@staticmethod
 	def rec_most_viewed_item(user_id):
 		rows = app.db.execute("""
-SELECT p.id, p.name, p.price, p.available, h.view_times
+SELECT p.*, h.view_times
 FROM Products AS p, User_browsing_history AS h
-WHERE h.user_id = :user_id AND p.id = h.product_id
+WHERE h.user_id = :user_id AND p.product_id = h.product_id
 ORDER BY h.view_times DESC
 """,
 				user_id=user_id)
@@ -55,14 +55,14 @@ ORDER BY h.view_times DESC
 			return None
 
 		print(rows)
-		return [Product(*row[0:4]) for row in rows]
+		return [Product(*row[0:-1]) for row in rows]
 
 	@staticmethod
 	def rec_recent_viewed_item(user_id):
 		rows = app.db.execute("""
-SELECT p.id, p.name, p.price, p.available, h.last_view_ts
+SELECT p.*, h.last_view_ts
 FROM Products AS p, User_browsing_history AS h
-WHERE h.user_id = :user_id AND p.id = h.product_id
+WHERE h.user_id = :user_id AND p.product_id = h.product_id
 ORDER BY h.last_view_ts DESC
 """,
 				user_id=user_id)
@@ -71,7 +71,7 @@ ORDER BY h.last_view_ts DESC
 			return None
 
 		print(rows)
-		return [Product(*row[0:4]) for row in rows]
+		return [Product(*row[0:-1]) for row in rows]
 
 
 

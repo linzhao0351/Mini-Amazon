@@ -2,13 +2,15 @@ from flask import current_app as app
 
 
 class Inventory:
-    def __init__(self, id, seller_id, name, price, units_avail, available):
+    def __init__(self, id, seller_id, name, price, units_avail, available, short_desc, long_desc):
         self.id = id
         self.seller_id = seller_id
         self.name = name
         self.price = price        
         self.units_avail = units_avail
         self.available = available
+        self.short_desc = short_desc
+        self.long_desc = long_desc
 
 # display inventory information
     @staticmethod
@@ -39,17 +41,19 @@ WHERE product_id=:product_id AND seller_id = :seller_id
         
 # add inventory
     @staticmethod
-    def add_product(seller_id, name, price, units_avail, available):
+    def add_product(seller_id, name, price, units_avail, available, short_desc, long_desc):
         try:
             rows = app.db.execute("""
-INSERT INTO Products(seller_id, name, price, units_avail, available)
-VALUES(:seller_id, :name, :price, :units_avail, :available)
+INSERT INTO Products(seller_id, name, price, units_avail, available, short_desc, long_desc)
+VALUES(:seller_id, :name, :price, :units_avail, :available, :short_desc, :long_desc)
 """,
                                   seller_id = seller_id,
                                   name = name,
                                   price=price,
                                   units_avail = units_avail,
-                                  available = available)
+                                  available = available,
+                                  short_desc=short_desc,
+                                  long_desc=long_desc)
             
             product_id = rows[0][0]
             if rows is None:
@@ -75,17 +79,19 @@ WHERE seller_id=:seller_id AND product_id=:product_id
 
 # update inventory units_avail and price manually by seller
     @staticmethod
-    def update(product_id, seller_id, price, units_avail,available):
+    def update(product_id, seller_id, price, units_avail,available,short_desc,long_desc):
         res = app.db.execute('''
 UPDATE Products
-SET price =:price, units_avail=:units_avail, available=:available
+SET price =:price, units_avail=:units_avail, available=:available, short_desc=:short_desc, long_desc=:long_desc
 WHERE product_id=:product_id AND seller_id=:seller_id
 ''',
 					seller_id=seller_id,
 					product_id=product_id,
                     price=price,
                     units_avail=units_avail,
-                    available=available)
+                    available=available,
+                    short_desc=short_desc,
+                    long_desc=long_desc)
         return res   
 
 

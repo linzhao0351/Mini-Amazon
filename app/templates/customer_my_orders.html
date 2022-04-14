@@ -2,6 +2,13 @@
 
 {% block content %}
 
+{% if orders_summary == None %}
+
+<p>
+    You don't have any order yet.
+</p>
+
+{% else %}
 
 <br>
 <h1 class="fw-400 text-center mt-3 mb-4">My order history</h1>
@@ -31,22 +38,27 @@
     <div class="panel-body">
         <div class="row">
 
-            {% for order in orders %}
+            {% for order in orders_summary %}
 
             <div class="col-md-1"><img src= "https://cdn-icons-png.flaticon.com/512/2331/2331970.png" class="media-object img-thumbnail" /></div>
             <div class="col-md-11">
                 <div class="row">
                     <div class="col-md-12"><span><strong>Order ID: </a><font color="PaleVioletRed">{{order.order_id}}</font></strong></span></div>
-                    <div class="col-md-12">Product:<font color="PaleVioletRed">{{order.product_name}}</font></div>
                     <div class="col-md-12">Amount: <font color="PaleVioletRed">${{order.total_amount}}</font></div>
                     <div class="col-md-12">Purchased: <font color="PaleVioletRed">{{order.ts}}</font></div>
-                    <div class="col-md-12">Fulfillment status: <font color="PaleVioletRed">{{order.fulfillment_status}}</font></div>
+                    <div class="col-md-12">Fulfillment Status: 
+                        <font color="PaleVioletRed">
+                            {% if order.order_status == 0 %}
+                                Processing
+                            {% else %}
+                                Fulfilled
+                            {% endif %}
+                        </font>
+                    </div>
                     <div class="col-md-12">
-                        <form action = "{{ url_for('customer.display_orderID') }}" method="post">
-                            <a></a><font color="SteelBlue">View this order details</a></font>
-                            <input type="hidden" name="order_id" value={{order.order_id}} />
-                            <input type="submit" value="Click"/>
-                        </form>
+                            <a></a><font color="SteelBlue">
+                                <a href="{{ url_for('customer.display_order_detail', order_id=order.order_id) }}">View this order details</a> <br/>
+                            </a></font>
                     </div>
                     <hr>
                 </div>
@@ -58,10 +70,13 @@
     </div>
 </div>
 
+{% endif %}
+
 <br>
 <div style="text-align:center">
 <a href="{{ url_for('customer.customer_portal') }}" type="button" class="btn btn-light">Back to main menu</a>
 </div>
 <hr>
+
 
 {% endblock %}
