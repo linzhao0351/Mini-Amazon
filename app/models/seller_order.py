@@ -2,13 +2,14 @@ from flask import current_app as app
 
 
 class OrderSummary():
-    def __init__(self, order_id, buyer_id, ts, firstname, lastname, address):
+    def __init__(self, order_id, buyer_id, ts, firstname, lastname, address, order_status):
         self.order_id = order_id
         self.buyer_id = buyer_id
         self.firstname = firstname
         self.lastname = lastname
         self.address = address
         self.ts = ts
+        self.order_status = order_status
 
 class SellerOrder():
 
@@ -39,7 +40,7 @@ WHERE p1.seller_id=:seller_id AND p1.product_id=p3.product_id
     @staticmethod
     def get_order_summary(order_id):
         rows = app.db.execute('''
-SELECT O.order_id, O.buyer_id, O.ts, U.firstname, U.lastname, U.address
+SELECT O.order_id, O.buyer_id, O.ts, U.firstname, U.lastname, U.address, O.order_status
 FROM Orders_summary AS O, Users AS U
 WHERE O.order_id=:order_id AND O.buyer_id=U.id
 ORDER BY O.ts DESC

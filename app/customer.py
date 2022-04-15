@@ -47,6 +47,9 @@ def my_cart():
 	if "Update" in request.form:
 		# Update cart
 		for item in cart_form.items:
+			print(item.product_id.data)
+			print(item.quantity.data)
+
 			Cart.update(current_user.id, item.product_id.data, item.quantity.data)
 		return redirect(url_for('customer.my_cart'))
 
@@ -166,7 +169,7 @@ def public_profile(buyer_id):
 	return render_template('customer_public_profile.html', cuser = cuser)
 
 
-@bp.route('/customer/account/my-profile', methods=['GET', 'POST'])
+@bp.route('/account/my-profile', methods=['GET', 'POST'])
 def my_profile():
 	cuser = User.get(current_user.id)
 	form = Update_profile()
@@ -179,7 +182,7 @@ def my_profile():
 		nickname = form.nickname.data
 		address = form.address.data
 
-		User.Update(id, email, firstname, lastname, address, nickname, address)
+		User.Update(id, email, firstname, lastname, nickname, address)
 		cuser = User.get(current_user.id)
 
 		flash('Your profile is updated!')

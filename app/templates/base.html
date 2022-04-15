@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/example.css') }}">
   <style>
     body {
-        font-family: "Lato", sans-serif;
+        font-family: "Avenir Next", sans-serif;
     }
 
     .main-head {
@@ -19,7 +19,7 @@
 
     .sidenav {
         height: 100%;
-        background-color: #000;
+        background-color: #696969;
         overflow-x: hidden;
         padding-top: 20px;
     }
@@ -38,28 +38,60 @@
         font-weight: 300;
     }
 
-    .btn-black {
-        background-color: #000 !important;
-        color: #fff;
+    .frame {
+      width: 90%;
+      margin: 40px auto;
+      text-align: center;
     }
+
+    .btn-black {
+      display:inline-block;
+      background-color: #696969;
+      border: 4px double #f5f0f0;
+      border-radius: 10px;
+      color: #eeeeee;
+    }
+    
+    .btn-light {
+      display:inline-block;
+      background-color: #f5f0f0;
+      border: 4px double #696969;
+      border-radius: 10px;
+      color: #000000;
+    }
+
+    .nav-link {
+      color: Beige;
+      font-family: "Avenir Next", sans-serif;
+      font-weight: 650;
+      font-size: 50px;
+      letter-spacing: 0.05em;
+      text-shadow: -2px 2px 2px #999;
+    }
+
+    .center {
+      max-width: 500px;
+      margin: auto;
+    }
+
   </style>
 </head>
 
 <body>
   <div class="sidenav">
     {% block msg %}
-      <h1 style="color:aliceblue"> <a href="{{ url_for('index.index') }}">Relentless.com</a> </h1>
-      <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
+      <h1 style="margin-left:10px;"> <a href="{{ url_for('index.index') }}" class="nav-link"> Relentless.com </a></h1>
+      <div style="color: White; text-align: right; margin-bottom: 25px">
         {% if current_user.is_authenticated %}
-          Hello {{current_user.firstname}}! identity: {{session["identity"]}} 
+          <strong>Hello {{current_user.firstname}}!</strong> [{{session["identity"]}} mode]
           {% if session["identity"] == 'customer' %}
-          <a href="{{ url_for('customer.customer_portal') }}" type="button" class="btn btn-light">Customer Account</a> 
+          <a href="{{ url_for('customer.customer_portal') }}" class="btn btn-light">Customer Account</a> 
           {% else %}
-          <a href="{{ url_for('seller.seller_portal') }}" type="button" class="btn btn-light">Seller Account</a> 
+          <a href="{{ url_for('seller.seller_portal') }}" class="btn btn-light">Seller Account</a> 
           {% endif %}
-          <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-light">Log out</a>
+          <a href="{{ url_for('users.logout') }}" class="btn btn-light">Log out</a>
         {% else %}
-          <a href="{{ url_for('users.login') }}" type="button" class="btn btn-light">Log in</a>
+          <a href="{{ url_for('users.login') }}" class="btn btn-light">Log in</a>
         {% endif %}
       </div>
     {% endblock %}
@@ -67,6 +99,54 @@
   <div class="main">
     {% block content %}{% endblock %}
   </div>
+
+  <style>
+    body {
+        font-family: "Lato", sans-serif;
+    }
+
+    .content-table {
+      border-collapse: collapse;
+      margin: 25px 0;
+      font-size: 1em;
+      min-width: 400px;
+      border-radius: 5px 5px 0 0;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+      margin-left: 10px;
+      margin-right: 10px;
+      width: 80%;
+    }
+    
+    .content-table thead tr {
+      background-color: #95A5A6;
+      color: #ffffff;
+      text-align: left;
+      font-weight: bold;
+    }
+    
+    .content-table th,
+    .content-table td {
+      padding: 12px 15px;
+    }
+    
+    .content-table tbody tr {
+      border-bottom: 1px solid #dddddd;
+    }
+    
+    .content-table tbody tr:nth-of-type(even) {
+      background-color: #f3f3f3;
+    }
+    
+    .content-table tbody tr:last-of-type {
+      border-bottom: 1px solid #95A5A6;
+    }
+
+    tbody tr:hover {
+      background: #DCDCDC;
+    }
+
+  </style>
 </body>
 
 </html>

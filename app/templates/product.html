@@ -21,6 +21,14 @@ button:focus{background-color:rgb(3, 151, 250);}
   {{ form.qty }}
   {{ form.submit(class_="btn btn-black") }}
 </form>
+<p>
+  {% if quantity == 0 %}
+    The product is not in your cart
+  {% else %}
+    There are {{ quantity }} items in your cart
+  {% endif %}
+</p>
+
 </div>
 
 

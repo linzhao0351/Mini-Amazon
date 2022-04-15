@@ -3,7 +3,7 @@
 {% block content %}
 <h3>My Product Reviews</h3>
 <p>
-  <table class="table">
+  <table class="content-table">
     <thead>
       <tr>  
       <th scope="col">Product</th>
@@ -34,7 +34,7 @@
 
 <h3>My Seller Reviews</h3>
 <p>
-  <table class="table">
+  <table class="content-table">
     <thead>
       <tr>  
       <th scope="col">User</th>
@@ -59,6 +59,8 @@
     {% endfor %}
   </table>
 </p>
+
+<a href="{{ url_for('seller.seller_portal') }}" class="btn btn-light">Back to main menu</a>
 
 
 

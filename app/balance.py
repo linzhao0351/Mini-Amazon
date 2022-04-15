@@ -40,7 +40,7 @@ def my_balance_withdraw():
 		balance = float(balance_info.balance) - float(trans)
 		if balance < 0:
 			flash('Withdrawal fail! (You can withdraw up to the available balance)')
-			return redirect(url_for('customer.my_balance_withdraw'))
+			return redirect(url_for('balance.my_balance_withdraw'))
 
 		else:
 			Update_balance.insert(trans_date, user_id, trans, trans_description, balance)

@@ -24,11 +24,11 @@
     <div class="card-body">
         <div>
             <div>
-                <div><img src="https://cdn-icons.flaticon.com/png/512/2763/premium/2763444.png?token=exp=1649020401~hmac=4ed9b2c432613b97e1bb56668b7b81ba" width="150" height="150" /></div>
+                <div><img src="/static/person_icon.png" width="200" height="150" /></div>
                 <br>
                 <h5> <font color="PaleVioletRed"> {{cuser.firstname }} {{cuser.lastname}}</font></h5>
                 <h6>ID: <font color="PaleVioletRed">{{cuser.id}}</font></h6>
-                h6>ID: <font color="PaleVioletRed">{{cuser.nickname}}</font></h6>
+                <h6>Nickname: <font color="PaleVioletRed">{{cuser.nickname}}</font></h6>
                 <h6>Email:  <font color="PaleVioletRed">{{cuser.email}}</font></h6>
                 <h6>Address: <font color="PaleVioletRed"> {{cuser.address}}</font></h6>
             </div>
@@ -61,16 +61,16 @@
             </div>
             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                 <div class="form-group">
+                    <label for="address">Nickname</label>
+                    {{ form.nickname(size=32, placeholder="Enter your new nickname") }}
+                </div>
+            </div>  
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                <div class="form-group">
                     <label for="eMail">Email</label>
                     {{ form.email(size=32, placeholder="Enter your new email") }}
                 </div>
-            </div>
-            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                <div class="form-group">
-                    <label for="address">Nickname</label>
-                    {{ form.address(size=32, placeholder="Enter your new nickname") }}
-                </div>
-            </div>            
+            </div>          
             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                 <div class="form-group">
                     <label for="address">Address</label>
@@ -81,7 +81,7 @@
         <div class="row gutters">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div class="text-right">
-                    <a href="{{ url_for('customer.customer_portal') }}" type="button" class="btn btn-light">Back to main menu</a>
+                    <a href="{{ url_for('customer.customer_portal') }}" class="btn btn-light">Back to main menu</a>
                     {{ form.submit(class_="btn btn-black") }}      
                 </div>
                 </form>

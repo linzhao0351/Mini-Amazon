@@ -10,8 +10,8 @@
     <h1 style="color: SteelBlue; "> ${{balance_info.balance}}</h1>
     <p class="mb-2 text-muted opacity-8">Available Balance</p>
     <hr>
-    <a href="{{ url_for('balance.my_balance_withdraw') }}" type="button" class="btn btn-light">Withdraw</a>
-    <a href="{{ url_for('balance.my_balance_topup') }}" type="button" class="btn btn-light">Top up</a>
+    <a href="{{ url_for('balance.my_balance_withdraw') }}" class="btn btn-light">Withdraw</a>
+    <a href="{{ url_for('balance.my_balance_topup') }}" class="btn btn-light">Top up</a>
 </div>
 <br>
 
@@ -40,7 +40,7 @@
 
 <br>
 <div class="bg-white shadow-sm rounded text-center p-3 mb-4">
-  <a href="{{ url_for('customer.customer_portal') }}" type="button" class="btn btn-light">Back to main menu</a>
+  <a href="{{ url_for('customer.customer_portal') }}" class="btn btn-light">Back to main menu</a>
 </div>
 
 {% endblock %}

@@ -329,7 +329,7 @@ class Seller_Review:
         SELECT O.product_id, S.buyer_id
         FROM Orders AS O, Orders_summary AS S
         WHERE O.seller_id = :seller_id AND S.buyer_id=:buyer_id AND O.order_id=S.order_id
-        ''', product_id=product_id, buyer_id=buyer_id)
+        ''', seller_id=seller_id, buyer_id=buyer_id)
 
         if len(rows) == 0:
             return False

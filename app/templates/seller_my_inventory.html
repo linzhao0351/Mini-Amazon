@@ -2,10 +2,10 @@
 
 {% block content %}
 <h2> My Inventory</h2>
-    <a class="btn btn-secondary" href="{{ url_for('seller.my_inventory_add_product') }}" role="button" >Add Product</a>
-    <a class="btn btn-secondary" href="{{ url_for('seller.analytics') }}" role="button" >My Product Analytics</a>
+    <a class="btn btn-black" href="{{ url_for('seller.my_inventory_add_product') }}" role="button" >Add Product</a>
+    <a class="btn btn-black" href="{{ url_for('seller.analytics') }}" role="button" >My Product Analytics</a>
 
-<table class='table table-hover table-bordered container'>
+<table class='content-table'>
   <thead class="thead-dark">
     <tr>
       <th scope="col">Product ID</th>

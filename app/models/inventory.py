@@ -1,5 +1,6 @@
 from flask import current_app as app
 
+from .product import Product
 
 class Inventory:
     def __init__(self, id, seller_id, name, price, units_avail, available, short_desc, long_desc, type_id, ptype):
@@ -39,7 +40,7 @@ WHERE product_id=:product_id AND seller_id = :seller_id
                               seller_id=seller_id)
         if rows is None:
             return None
-        return [Inventory(*row) for row in rows]        
+        return [Product(*row) for row in rows]        
         
 # add inventory
     @staticmethod
@@ -114,5 +115,5 @@ WHERE seller_id = :seller_id AND units_avail<=:limited_stock
                               limited_stock=limited_stock)
         if rows is None:
             return None
-        return [Inventory(*row) for row in rows]     
+        return [Product(*row) for row in rows]     
 

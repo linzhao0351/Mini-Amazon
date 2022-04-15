@@ -26,6 +26,21 @@ WHERE c.user_id = :user_id AND c.product_id = p.product_id
 
 		return [Cart(*row) for row in rows]
 
+	@staticmethod
+	def get_quantity(user_id, product_id):
+		rows = app.db.execute('''
+SELECT quantity
+FROM User_cart
+WHERE user_id=:user_id AND product_id=:product_id
+''',
+							user_id=user_id,
+							product_id=product_id)
+
+		if len(rows) == 0:
+			return 0
+
+		return rows[0][0]
+
 
 	@staticmethod
 	def insert(user_id, product_id, quantity):
@@ -250,6 +265,7 @@ WHERE order_id=:order_id AND product_id=:product_id
 					order_id=order_id,
 					product_id=product_id)
 
+		quantity = rows[0][1]
 		product_amount = rows[0][0] * rows[0][1]
 		seller_id = rows[0][2]
 
@@ -330,6 +346,15 @@ VALUES (:trans_date, :user_id, :trans, :trans_description, :balance)
 					trans = product_amount, 
 					trans_description='Retract product %s from order %s' % (product_id, order_id),
 					balance = current_balance)
+
+		# add back inventory
+		app.db.execute('''
+UPDATE Products
+SET units_avail = units_avail + :quantity
+WHERE product_id = :product_id
+''',
+					quantity=quantity,
+					product_id=product_id)
 
 		return "Success"
 

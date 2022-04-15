@@ -11,17 +11,16 @@
 </form>
 
 <br><br>
-
 {% if current_user.is_authenticated %}
 <h5>Recently viewed</h5>
 
 {% if no_recent_viewed %}
-<p>
-    You didn't view products recently
+<p style="color:Gray">
+  <em>You didn't view products recently</em>
 </p>
 {% else %}
 
-<table class='table table-hover table-bordered container'>
+<table class='content-table'>
   <thead class="thead-dark">
     <tr>
       <th scope="col">Product Name</th>
@@ -54,17 +53,17 @@
 <h5>Products you may like</h5>
 
 {% if no_most_viewed %}
-<p>
-    You didn't see any products yet.
+<p style="color:Gray">
+  <em>You didn't see any products yet.</em>
 </p>
 {% else %}
 
-<table class='table table-hover table-bordered container'>
-  <thead class="thead-dark">
+<table class='content-table'>
+  <thead>
     <tr>
-      <th scope="col">Product Name</th>
-      <th scope="col">Price</th>
-      <th scope="col">Seller</th>
+      <th>Product Name</th>
+      <th>Price</th>
+      <th>Seller</th>
     </tr>
   </thead>
   <tbody>
@@ -89,12 +88,12 @@
 <br><br>
 
 <h5>Products for sale:</h5>
-<table class='table table-hover table-bordered container'>
-  <thead class="thead-dark">
+<table class='content-table'>
+  <thead>
     <tr>
-      <th scope="col">Product Name</th>
-      <th scope="col">Price</th>
-      <th scope="col">Seller</th>      
+      <th>Product Name</th>
+      <th>Price</th>
+      <th>Seller</th>      
     </tr>
   </thead>
   <tbody>

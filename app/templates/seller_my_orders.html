@@ -11,7 +11,7 @@
 
 {% else %}
 
-<a class="btn btn-secondary" href="{{ url_for('seller.order_summary') }}" role="button" >Order Summary</a>
+<a class="btn btn-light" href="{{ url_for('seller.order_summary') }}" role="button" >Order Summary</a>
 
 <br><br>
 
@@ -29,9 +29,12 @@
 <p>
   Buyer Address: {{ orders_summary[order_id].address }}
 </p>
+<p>
+  Order Fulfillment Status: {{ orders_summary[order_id].order_status }}
+</p>
 
-<table class='table table-hover table-bordered container'>
-  <thead class="thead-dark">
+<table class='content-table'>
+  <thead class=>
     <tr>
       <th scope="col">Product ID</th>
       <th scope="col">Price</th>
@@ -48,7 +51,7 @@
         <td>{{item.quantity}}</td>
         <td>{{item.fulfillment_status}} </td>
         <td>
-          <a href="{{ url_for('seller.order_fulfill', order_id=order_id, product_id=item.product_id) }}" >Update</a>
+          <a href="{{ url_for('seller.order_fulfill', order_id=order_id, product_id=item.product_id) }}" class="btn btn-light" >Update</a>
         </td>
       </tr>
     {% endfor %}

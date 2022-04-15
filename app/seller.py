@@ -25,8 +25,9 @@ def seller_portal():
 
 @bp.route('/seller/account/my-profile') # can directly copy from Mae's part
 def my_profile():
-	userinfo = User.get(current_user.id)
-	return render_template('seller_my_profile.html', info = userinfo)
+	return redirect(url_for('customer.my_profile'))
+
+
 
 
 @bp.route('/seller/account/my-balance') # can directly copy from Mae's part
@@ -192,19 +193,19 @@ def public_profile(seller_id):
 	if request.form.get("Seller_Upvote_1"):
 		if Seller_Review.upvote_exists(current_user.id,request.form.get('Seller_Upvote_1')):
 			Seller_Review.downvote(current_user.id,request.form.get('Seller_Upvote_1'))
-			return redirect(url_for('seller.my_profile'))	
+			return redirect(url_for('seller.public_profile', seller_id=seller_id))	
 		else:
 			print('here')
 			Seller_Review.upvote(current_user.id,request.form.get('Seller_Upvote_1'))
-			return redirect(url_for('seller.my_profile'))
+			return redirect(url_for('seller.public_profile',  seller_id=seller_id))
 	
 	if request.form.get("Seller_Upvote_2"):
 		if Seller_Review.upvote_exists(current_user.id,request.form.get('Seller_Upvote_2')):
 			Seller_Review.downvote(current_user.id,request.form.get('Seller_Upvote_2'))
-			return redirect(url_for('seller.my_profile'))	
+			return redirect(url_for('seller.public_profile',  seller_id=seller_id))	
 		else:
 			Seller_Review.upvote(current_user.id,request.form.get('Seller_Upvote_2'))
-			return redirect(url_for('seller.my_profile'))
+			return redirect(url_for('seller.public_profile',  seller_id=seller_id))
 
 	return render_template('seller_public_profile.html', 
 													 cuser=userinfo, info = userinfo, 

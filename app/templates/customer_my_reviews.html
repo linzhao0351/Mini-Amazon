@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
+<br>
 <h3>My Product Reviews</h3>
 <p>
-  <table class="table">
+  <table class="content-table">
     <thead>
       <tr>  
       <th scope="col">Edit</th>
@@ -37,7 +38,7 @@
 
 <h3>My Seller Reviews</h3>
 <p>
-  <table class="table">
+  <table class="content-table">
     <thead>
       <tr>  
       <th scope="col">Edit</th>
@@ -64,6 +65,8 @@
     {% endfor %}
   </table>
 </p>
+
+<a href="{{ url_for('customer.customer_portal') }}" class="btn btn-light">Back to main menu</a>
 
 
 

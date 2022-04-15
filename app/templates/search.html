@@ -12,8 +12,8 @@
     Search results for {{ search_kw }}
 </p>
 
-<table class='table table-hover table-bordered container'>
-  <thead class="thead-dark">
+<table class='content-table'>
+  <thead >
     <tr>
       <th scope="col">Product Name</th>
       <th scope="col">Price</th>
@@ -23,7 +23,7 @@
     {% for product in results %}
       <tr>
         <td>
-            <a href="{{ url_for('product.display_product', product_id=product.product_id) }}">{{product.name}}</a>
+            <a href="{{ url_for('product.display_product', product_id=product.product_id) }}" >{{product.name}}</a>
         </td>
         <td>{{product.price}}</td>
       </tr>
