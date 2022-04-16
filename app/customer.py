@@ -42,16 +42,7 @@ class CartForm(FlaskForm):
 
 @bp.route('/customer/account/my-cart', methods=['GET', 'POST'])
 def my_cart():
-	cart_form = CartForm()
-
-	if "Update" in request.form:
-		# Update cart
-		for item in cart_form.items:
-			print(item.product_id.data)
-			print(item.quantity.data)
-
-			Cart.update(current_user.id, item.product_id.data, item.quantity.data)
-		return redirect(url_for('customer.my_cart'))
+	cart = Cart.get(current_user.id)
 
 	if "Clear" in request.form:
 		# clear cart
@@ -60,27 +51,31 @@ def my_cart():
 
 
 	if "Submit" in request.form:
-		for item in cart_form.items:
-			Cart.update(current_user.id, item.product_id.data, item.quantity.data)
 		return redirect(url_for('customer.order_summary'))
-
-	cart = Cart.get(current_user.id)
-
-	for item in cart:
-		item_form = ItemForm()
-		item_form.product_id = item.product_id
-		item_form.product_name = item.product_name
-		item_form.price = item.price
-		item_form.quantity = item.quantity
-
-		cart_form.items.append_entry(item_form)
 
 	if 'msg' in request.args:
 		msg = request.args['msg']
 	else:
 		msg = ""
 
-	return render_template('customer_my_cart.html', cart_form=cart_form, msg=msg)
+	return render_template('customer_my_cart.html', cart=cart, msg=msg)
+
+
+class QtyForm(FlaskForm):
+	quantity = IntegerField("New Quantity")
+	submit = SubmitField("Submit")
+
+@bp.route('/customer/account/my-cart/update/<product_id>', methods=['GET', 'POST'])
+def update_item(product_id):
+	form = QtyForm()
+	item = Cart.get_item(current_user.id, product_id)
+	if form.validate_on_submit():
+		Cart.update(current_user.id, product_id, form.quantity.data)
+		return redirect(url_for('customer.my_cart'))
+
+	return render_template('customer_update_my_cart.html', form=form, item=item)
+
+
 
 
 @bp.route('/customer/account/my-cart/delete/<product_id>', methods=['GET', 'POST'])
@@ -116,24 +111,14 @@ def order_summary():
 			Cart.retract_order(order_id)
 			return redirect(url_for('customer.order_summary'))
 
-		try:
-			Cart.update_inventory(cart) 
-		except Exception as e:
-			print(str(e))
-			Cart.retract_order(order_id)
-			return redirect(url_for('customer.order_summary'))		
-
-		try:
-			Cart.update_balance(current_user.id, total_amount) 
-			Cart.update_seller_balance(cart)
-		except Exception as e:
-			print(str(e))
-			Cart.retract_order(order_id)
-			return redirect(url_for('customer.order_summary'))		
-
-
+		Cart.update_inventory(cart) 
+		Cart.update_balance(current_user.id, total_amount) 
+		Cart.update_seller_balance(cart)
 
 		Cart.clear(current_user.id)
+
+		Cart.create_system_message(cart, order_id)
+
 		return redirect(url_for('customer.success_order', order_id=order_id))
 
 	return render_template('order_summary.html', cart=cart, total_amount=total_amount)
@@ -226,7 +211,7 @@ def display_order_detail(order_id):
 ##### Harsha's Part
 @bp.route('/customer/account/my-messages')
 def my_messages():
-	msg = "Hello world!"
+	msg = "Hello world"
 	return render_template('customer_my_messages.html', info = msg)
 
 

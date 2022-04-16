@@ -36,15 +36,27 @@
   </p>
   <p>
     {{ form.quantity.label }}<br/>
-    {{ form.quantity(size=64) }}<br/>
+    {{ form.quantity(size=32) }}<br/>
   </p>
   <p>
     {{ form.available.label }}<br/>
-    {{ form.available(size=32) }}<br/>
+    {{ form.available }}<br/>
   </p>
   <p>
+    {{ form.type_id.label }}<br/>
+    {{ form.type_id }}<br/>
+  </p>    
+  <p>
+    {{ form.short_desc.label }}<br/>
+    {{ form.short_desc }}<br/>
+  </p>
+  <p>
+    {{ form.long_desc.label }}<br/>
+    {{ form.long_desc }}<br/>
+  </p>
+  <br>
+  <p>
     {{ form.submit(class="btn btn-light") }}<br/>
-    <a href="{{ url_for('seller.seller_portal') }}" class="btn btn-light">Back to main menu</a>
   </p> 
 </form>
 

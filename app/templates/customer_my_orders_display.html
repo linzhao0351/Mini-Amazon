@@ -34,10 +34,18 @@
           {% endif %}
         </td>
         <td>
-          <a href="{{ url_for('review.write_review', product_id=item.product_id) }}">Write Review</a>
+          {% if item.fulfillment_status == 0 %}
+            Review after order completes
+          {% else %}
+            <a href="{{ url_for('review.write_review', product_id=item.product_id) }}">Write Review</a>
+          {% endif %}
         </td>
         <td>
-          <a href="{{ url_for('review.write_seller_review', seller_id=item.seller_id) }}">Write Review</a>
+          {% if item.fulfillment_status == 0 %}
+            Review after order completes
+          {% else %}
+            <a href="{{ url_for('review.write_seller_review', seller_id=item.seller_id) }}">Write Review</a>
+          {% endif %}
         </td>
       </tr>
     {% endfor %}

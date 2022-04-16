@@ -21,5 +21,4 @@ LIMIT 5
 ''',
                     seller_id=seller_id)
         
-        print(rows)
         return rows

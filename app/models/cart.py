@@ -41,6 +41,21 @@ WHERE user_id=:user_id AND product_id=:product_id
 
 		return rows[0][0]
 
+	@staticmethod
+	def get_item(user_id, product_id):
+		rows = app.db.execute('''
+SELECT c.user_id, p.seller_id, c.product_id, p.name, c.quantity, p.price, c.ts
+FROM User_cart AS c, Products AS p
+WHERE c.user_id = :user_id AND c.product_id = p.product_id AND c.product_id = :product_id
+''',
+							user_id=user_id,
+							product_id=product_id)
+
+		if len(rows) == 0:
+			return None
+			
+		return Cart(*(rows[0]))			
+
 
 	@staticmethod
 	def insert(user_id, product_id, quantity):
@@ -201,7 +216,7 @@ VALUES (:trans_date, :user_id, :trans, :trans_description, :balance)
 ''',
 					trans_date = date.today(),
 					user_id = user_id, 
-					trans = total_amount, 
+					trans = -total_amount, 
 					trans_description='Purchase',
 					balance = current_balance)
 
@@ -243,8 +258,6 @@ WHERE order_id=:order_id
 ''',
 					order_id=order_id)
 
-		return 0
-
 		app.db.execute('''
 DELETE 
 FROM Orders_summary
@@ -252,6 +265,19 @@ WHERE order_id=:order_id
 ''',
 					order_id=order_id)
 
+
+		return 0
+
+	@staticmethod
+	def create_system_message(cart, order_id):
+		for item in cart:
+			rows = app.db.execute('''
+INSERT INTO System_messages(user_id, msg)
+VALUES (:user_id, :msg)
+''',
+					user_id=item.seller_id,
+					msg="You have a new order! Order ID: %s" % order_id)
+		return 0
 
 
 	@staticmethod
@@ -343,7 +369,7 @@ VALUES (:trans_date, :user_id, :trans, :trans_description, :balance)
 ''',
 					trans_date = date.today(),
 					user_id = seller_id, 
-					trans = product_amount, 
+					trans = -product_amount, 
 					trans_description='Retract product %s from order %s' % (product_id, order_id),
 					balance = current_balance)
 
@@ -356,10 +382,15 @@ WHERE product_id = :product_id
 					quantity=quantity,
 					product_id=product_id)
 
+		# send an system message
+		app.db.execute('''
+INSERT INTO System_messages(user_id, msg)
+VALUES (:user_id, :msg)
+''',
+					user_id=seller_id,
+					msg="Product %s in order %s is retracted." % (product_id, order_id))
+
 		return "Success"
-
-
-
 
 
 		

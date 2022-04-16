@@ -5,7 +5,22 @@
     My Messages
 </p>
 
-<p>
-    {{ info }}
-</p>
+<table class='content-table'>
+  <thead class=>
+    <tr>
+      <th scope="col">Received Time</th>
+      <th scope="col">Message</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for msg in messages %}
+      <tr>
+        <th scope="row">{{ msg.ts }}</th>
+        <td>{{ msg.content }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
 {% endblock %}

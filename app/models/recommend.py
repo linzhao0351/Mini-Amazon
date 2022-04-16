@@ -37,7 +37,6 @@ WHERE user_id=:user_id AND product_id=:product_id
 				product_id=product_id,
 				view_times=view_times)
 
-		print(view_times)
 		return res
 
 
@@ -54,7 +53,6 @@ ORDER BY h.view_times DESC
 		if len(rows) == 0:
 			return None
 
-		print(rows)
 		return [Product(*row[0:-1]) for row in rows]
 
 	@staticmethod
@@ -70,7 +68,6 @@ ORDER BY h.last_view_ts DESC
 		if len(rows) == 0:
 			return None
 
-		print(rows)
 		return [Product(*row[0:-1]) for row in rows]
 
 

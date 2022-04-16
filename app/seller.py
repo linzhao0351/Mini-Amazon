@@ -14,6 +14,7 @@ from .models.seller_order import SellerOrder
 from .models.analytics import Analytics
 from .models.review import Product_Review, Seller_Review
 from .models.search import Search
+from .models.message import Message
 
 @bp.route('/seller/account')
 def seller_portal():
@@ -79,7 +80,7 @@ class InventoryUpdateForm(FlaskForm):
 	available = BooleanField('Available')
 	short_desc = TextAreaField('Short Description')
 	long_desc = TextAreaField('Long Description')
-	submit = SubmitField('Update Availability')	
+	submit = SubmitField('Update')	
 
 @bp.route('/seller/account/my-inventory/update/<pid>', methods=['GET', 'POST'])
 def update_inventory(pid):
@@ -91,9 +92,9 @@ def update_inventory(pid):
 						form.price.data,
 						form.quantity.data,
 						form.available.data,
-						form.short_desc,
-						form.long_desc,
-						form.type_id)
+						form.short_desc.data,
+						form.long_desc.data,
+						form.type_id.data)
 		return redirect(url_for('seller.my_inventory'))
 	return render_template('seller_update_inventory.html', inventory=inventory, form=form)
 
@@ -215,7 +216,13 @@ def public_profile(seller_id):
 													 count = review_count)
 
 
+# implemented by Lin
 @bp.route('/seller/account/my-messages', methods=['GET', 'POST'])
 def my_messages():
-	msg = "Hello world!"
-	return render_template('seller_my_messages.html', info = msg)
+	messages = Message.get_messages(current_user.id)
+	return render_template('seller_my_messages.html', messages=messages)
+
+
+
+
+

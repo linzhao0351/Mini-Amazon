@@ -72,7 +72,6 @@ ORDER BY ts DESC
 					regex=regex,
                     buyer_id = buyer_id)
 		
-		print(rows)
 		if len(rows) == 0:
 			return None
 

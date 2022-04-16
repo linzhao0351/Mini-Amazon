@@ -26,15 +26,16 @@ class SellerOrder():
     @staticmethod
     def get(seller_id):
         rows = app.db.execute('''
-SELECT p1.*, p3.name
-FROM Orders AS p1, Products AS p3
-WHERE p1.seller_id=:seller_id AND p1.product_id=p3.product_id
+SELECT p1.*, p3.name, S.ts
+FROM Orders AS p1, Products AS p3, Orders_summary as S
+WHERE p1.seller_id=:seller_id AND p1.product_id=p3.product_id AND p1.order_id=S.order_id
+ORDER BY S.ts DESC
 ''',
                               seller_id=seller_id)
         if len(rows) == 0:
             return None
 
-        return [SellerOrder(*row) for row in rows]
+        return [SellerOrder(*row[0:-1]) for row in rows]
         
 
     @staticmethod

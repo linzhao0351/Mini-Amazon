@@ -43,7 +43,7 @@ def my_balance_withdraw():
 			return redirect(url_for('balance.my_balance_withdraw'))
 
 		else:
-			Update_balance.insert(trans_date, user_id, trans, trans_description, balance)
+			Update_balance.insert(trans_date, user_id, -float(trans), trans_description, balance)
 			balance_info = Balance.get(current_user.id)
 			
 			flash('Withdrawal successful!')
