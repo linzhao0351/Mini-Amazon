@@ -3,6 +3,8 @@ import os
 import csv
 import datetime
 import random
+import names
+
 
 from werkzeug.security import generate_password_hash
 
@@ -25,8 +27,16 @@ def gen_users(num_users):
             if id % 100 == 0:
                 print(f'{id}', end=' ', flush=True)
             
+            # fullname = names.get_full_name()
+            # firstname = fullname.split(' ')[0]
+            # lastname = fullname.split(' ')[-1]
+            # email = 'n%s_%s%s@email.com' % (id, firstname, lastname)
+            # plain_password = f'pass{id}'
+            # password = generate_password_hash(plain_password)
+            # nickname = "Programmer%s" % id
+            # address = "%s %s Drive" % (fake.random_int(min=0, max=100), lastname)
+
             profile = fake.profile()
-            
             email0 = profile['mail'] # fix repetitive issue
             email = f'n{id}_{email0}'
             plain_password = f'pass{id}'
@@ -384,9 +394,8 @@ def gen_reviews(orders, orders_summary):
 
 if __name__ == '__main__':
     
-    num_users = 100
-    num_products = 5000
-    num_purchases = 10000
+    num_users = 10000
+    num_products = 10000
     num_views = 20000
 
 
