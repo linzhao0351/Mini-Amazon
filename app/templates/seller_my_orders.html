@@ -30,7 +30,7 @@
   Buyer Address: {{ orders_summary[order_id].address }}
 </p>
 <p>
-  Order Fulfillment Status: {{ orders_summary[order_id].order_status }}
+  Order Fulfillment Status: {{ seller_order_fulfillment[order_id] }}
 </p>
 
 <table class='content-table'>
@@ -53,11 +53,11 @@
         <td>
           <a href="{{ url_for('seller.order_fulfill', order_id=order_id, product_id=item.product_id) }}" class="btn btn-light" >Update</a>
         </td>
-      </tr>
     {% endfor %}
   </tbody>
 </table>
 
+<hr>
 
 {% endfor %}
 

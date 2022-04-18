@@ -136,7 +136,12 @@ def my_orders():
 	for order_id in orders_dict.keys():
 		orders_summary[order_id] = SellerOrder.get_order_summary(order_id)
 
-	return render_template('seller_my_orders.html', is_none=is_none, orders_dict = orders_dict, orders_summary=orders_summary)
+	seller_order_fulfillment = {}
+	for order_id in orders_dict.keys():
+		item_fulfill_status = [item.fulfillment_status for item in orders_dict[order_id]]
+		seller_order_fulfillment[order_id] = sum(item_fulfill_status) == len(item_fulfill_status)
+
+	return render_template('seller_my_orders.html', is_none=is_none, orders_dict = orders_dict, orders_summary=orders_summary, seller_order_fulfillment=seller_order_fulfillment)
 
 
 # edit fake order info [can be deleted later]
