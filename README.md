@@ -10,6 +10,7 @@ __Project Choice__: Fixed project: Mini-Amazon
 
 __Github Link__: https://github.com/linzhao0351/Mini-Amazon.git
 
+__Video Link__: https://urldefense.com/v3/__https://duke.zoom.us/rec/share/MMf-vZxZmxegyiAIJ9scrvD2xviEgvAaHdneKP0nCOzjBhY-eL1eNbJunw-DTcWP.gYtbvoZ6ifYVOw_c__;!!OToaGQ!_G5jzsiP7XZtU1qJUCz-pgaOr_V-g5O3v8pcb0beK82r0DiLF15KW_ZdPRcmlA5o$
 
 # Project introduction
 
